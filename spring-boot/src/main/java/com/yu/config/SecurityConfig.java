@@ -65,16 +65,22 @@ public class SecurityConfig {
 
     /**
      * 不走过滤器链的放行配置
+     * 默认放行静态资源、登录接口、验证码接口、Swagger接口文档
      */
     @Bean
     public WebSecurityCustomizer webSecurityCustomizer() {
         return (web) -> web.ignoring()
                 .requestMatchers(
                         "/api/v1/auth/captcha",
+                        "/api/v1/student/verify",
+                        "/api/v1/users/getEmailVerifyCode",
+                        "/api/v1/users/saveStudent",
+                        "/api/v1/accessLog/authentication",
+                        "/api/v1/users/resetPassword",
                         "/webjars/**",
                         "/doc.html",
-                        "/swagger-resources/**",
                         "/v3/api-docs/**",
+                        "/swagger-resources/**",
                         "/swagger-ui/**",
                         "/ws/**"
                 );

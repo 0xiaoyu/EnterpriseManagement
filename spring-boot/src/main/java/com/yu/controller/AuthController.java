@@ -34,14 +34,14 @@ public class AuthController {
 
     @Operation(summary = "注销", security = {@SecurityRequirement(name = SecurityConstants.TOKEN_KEY)})
     @DeleteMapping("/logout")
-    public Result logout() {
+    public Result<Boolean> logout() {
         authService.logout();
         return Result.success();
     }
 
     @Operation(summary = "获取验证码")
     @GetMapping("/captcha")
-    public Result getCaptcha() {
+    public Result<CaptchaResult> getCaptcha() {
         CaptchaResult captcha = authService.getCaptcha();
         return Result.success(captcha);
     }

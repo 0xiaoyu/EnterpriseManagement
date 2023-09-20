@@ -1,26 +1,20 @@
 package com.yu.config;
 
-import io.swagger.v3.oas.models.*;
+import io.swagger.v3.oas.models.Components;
+import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Info;
-import io.swagger.v3.oas.models.info.License;
 import io.swagger.v3.oas.models.security.SecurityScheme;
-import org.springdoc.core.customizers.OpenApiCustomizer;
 import org.springdoc.core.models.GroupedOpenApi;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-
-import java.util.LinkedHashMap;
-import java.util.Map;
-import java.util.Set;
-import java.util.TreeMap;
 
 /**
  * Swagger 配置
  * <p>
  * Spring Doc FAQ: https://springdoc.org/#faq
  *
- * @author yu
- * @since 2023/9/16
+ * @author zay
+ * @since 2023/2/17
  */
 @Configuration
 public class SwaggerConfig {
@@ -38,11 +32,9 @@ public class SwaggerConfig {
                         )
                 )
                 .info(new Info()
-                        .title("youlai-boot 接口文档")
-                        .version("2.0.0")
+                        .title("xiao-yu-EnterpriseManagement 接口文档")
+                        .version("1.0.0")
                         .description("接口文档")
-                        .license(new License().name("Apache 2.0")
-                                .url("https://www.youlai.tech"))
                 );
     }
 
@@ -52,7 +44,7 @@ public class SwaggerConfig {
     @Bean
     public GroupedOpenApi systemApi() {
         String[] paths = {"/**"};
-        String[] packagesToScan = {"com.yucontroller"};
+        String[] packagesToScan = {"com.yu.controller"};
         return GroupedOpenApi.builder()
                 .group("系统接口")
                 .packagesToScan(packagesToScan)

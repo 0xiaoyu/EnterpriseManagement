@@ -172,7 +172,7 @@ public class SysMenuServiceImpl extends ServiceImpl<SysMenuMapper, SysMenu> impl
      */
     @Override
     public Set<String> listRolePerms(Set<String> roles) {
-        Set<String> perms = this.baseMapper.listRolePerms(roles);
+        Set<String> perms = baseMapper.listRolePerms(roles);
         return perms;
     }
 

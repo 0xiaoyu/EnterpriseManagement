@@ -1,11 +1,17 @@
 package com.yu.config;
 
+import org.springframework.cache.CacheManager;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.data.redis.cache.RedisCacheConfiguration;
+import org.springframework.data.redis.cache.RedisCacheManager;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
+import org.springframework.data.redis.serializer.RedisSerializationContext;
 import org.springframework.data.redis.serializer.RedisSerializer;
+
+import java.time.Duration;
 
 /**
  * Redis 配置
@@ -43,5 +49,22 @@ public class RedisConfig {
     @Bean
     public ValueOperations<String,Object> valueOperations(RedisTemplate<String,Object> redisTemplate){
         return redisTemplate.opsForValue();
+    }
+
+    /**
+     * 对缓存进行序列化和反序列化的配置
+     * @param factory redis连接工厂
+     * @return
+     */
+    @Bean
+    public CacheManager cacheManager(RedisConnectionFactory factory){
+        RedisCacheConfiguration config = RedisCacheConfiguration.defaultCacheConfig()
+                .entryTtl(Duration.ofDays(1)) // 配置缓存时长
+                .prefixCacheNameWith("EM:") // 前缀
+                .serializeKeysWith(RedisSerializationContext.SerializationPair.fromSerializer(RedisSerializer.string())) // key序列化方式
+                .serializeValuesWith(RedisSerializationContext.SerializationPair.fromSerializer(RedisSerializer.json())); // value序列化方式
+        return RedisCacheManager.builder(factory)
+                .cacheDefaults(config)
+                .build();
     }
 }

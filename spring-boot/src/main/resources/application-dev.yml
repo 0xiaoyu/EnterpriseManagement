@@ -1,5 +1,5 @@
 server:
-  port: 8989
+  port: 8080
 
 spring:
   jackson:
@@ -10,7 +10,7 @@ spring:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://localhost:3306/enterprise?useSSL=false&serverTimezone=UTC&useUnicode=true&characterEncoding=utf8&rewriteBatchedStatements=true
     username: root
-    password: 1647022985
+    password: root
   data:
     redis:
       database: 6
@@ -35,7 +35,12 @@ spring:
     host: smtp.qq.com
     password: mpw:jvtyH9paRj/JMVYqyxDSwDq4pMxeBxbi5lHMm1AW8oU=
     ttl: 120
-
+  cache:
+    type: redis
+    redis:
+      key-prefix: Enterprise_ #key前缀
+      use-key-prefix: true #是否开启key前缀
+      cache-null-values: true #是否缓存空值
 
 
 mybatis-plus:

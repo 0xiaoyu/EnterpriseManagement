@@ -211,7 +211,7 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
      */
     @Override
     public Integer getMaximumDataScope(Set<String> roles) {
-        Integer dataScope = this.baseMapper.getMaximumDataScope(roles);
+        Integer dataScope = baseMapper.getMaximumDataScope(roles);
         return dataScope;
     }
 

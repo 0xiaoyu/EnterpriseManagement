@@ -37,7 +37,7 @@ const logo = ref(new URL(`../../../assets/logo.png`, import.meta.url).href);
       >
         <img v-if="settingsStore.sidebarLogo" :src="logo" class="w-5 h-5" />
         <span class="ml-3 text-white text-sm font-bold"
-          >vue3-element-admin</span
+          >企业管理系统</span
         >
       </router-link>
     </transition>

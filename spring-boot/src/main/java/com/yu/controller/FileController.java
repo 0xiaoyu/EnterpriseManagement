@@ -1,12 +1,13 @@
 package com.yu.controller;
 
+
 import com.yu.common.result.Result;
+import com.yu.common.util.AliyunOssUtil;
 import com.yu.model.dto.FileInfo;
-import com.yu.service.OssService;
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import io.swagger.v3.oas.annotations.Operation; 
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import org.springframework.web.bind.annotation.*;
@@ -18,7 +19,16 @@ import org.springframework.web.multipart.MultipartFile;
 @RequiredArgsConstructor
 public class FileController {
 
-    private final OssService ossService;
+    private final AliyunOssUtil ossService;
+
+    @PostMapping("avatar")
+    @Operation(summary = "图片上传", security = {@SecurityRequirement(name = "Authorization")})
+    public Result<String> uploadAvatar(
+            @Parameter(description ="表单图片对象") @RequestParam(value = "file") MultipartFile file
+    ) {
+        FileInfo fileInfo = ossService.uploadAvatar(file);
+        return Result.success(fileInfo.getUrl());
+    }
 
     @PostMapping
     @Operation(summary = "文件上传", security = {@SecurityRequirement(name = "Authorization")})
@@ -32,7 +42,7 @@ public class FileController {
     @DeleteMapping
     @Operation(summary = "文件删除", security = {@SecurityRequirement(name = "Authorization")})
     @SneakyThrows
-    public Result deleteFile(
+    public Result<Boolean> deleteFile(
             @Parameter(description ="文件路径") @RequestParam String filePath
     ) {
         boolean result = ossService.deleteFile(filePath);

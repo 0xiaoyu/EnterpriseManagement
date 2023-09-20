@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yu.mapper.DormitoryMapper">
+
+    <resultMap id="BaseResultMap" type="com.yu.model.entity.Dormitory">
+            <id property="id" column="id" jdbcType="BIGINT"/>
+            <result property="buildingId" column="building_id" jdbcType="INTEGER"/>
+            <result property="dormitoryNumber" column="dormitory_number" jdbcType="INTEGER"/>
+            <result property="capacity" column="capacity" jdbcType="TINYINT"/>
+            <result property="electricity" column="electricity" jdbcType="DOUBLE"/>
+            <result property="water" column="water" jdbcType="DOUBLE"/>
+            <result property="eStatus" column="e_status" jdbcType="TINYINT"/>
+            <result property="wStatus" column="w_status" jdbcType="TINYINT"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,building_id,dormitory_number,
+        capacity,electricity,water,
+        e_status,w_status
+    </sql>
+    <select id="floorPage" resultType="com.yu.model.entity.Dormitory">
+        select * from tb_dormitory
+        <where>
+            <if test="q.buildingId != null">
+                and building_id = #{q.buildingId}
+            </if>
+            <if test="q.wStatus != null">
+                and w_status = #{q.wStatus}
+            </if>
+            <if test="q.eStatus != null">
+                and e_status = #{q.eStatus}
+            </if>
+            <if test="q.floor != null">
+                <choose>
+                    <when test="q.dormitoryNumber != null">
+                        and dormitory_number = concat(#{q.floor},LPAD(#{q.dormitoryNumber}, 2, '0'))
+                    </when>
+                    <otherwise>
+                        and dormitory_number like concat(#{q.floor},'__')
+                    </otherwise>
+                </choose>
+            </if>
+        </where>
+    </select>
+    <select id="getUserByDormitoryId" resultType="com.yu.model.entity.SysUser" parameterType="java.lang.Long">
+        select u.*
+        from sys_user u
+        where id in (select userid
+                     from tb_user_dormitory
+                     where dormitoryId = #{id})
+    </select>
+    <select id="getUserPage" resultType="com.yu.model.vo.UserDormitoryVo">
+        select u.username,u.id,u.dept_id,build_name as buildingName,dormitory_number as dormitoryNumber,type
+        from sys_user u
+        join (select build_name, dormitory_number,ud.userid,building_id,type
+        from tb_dormitory dor
+        join tb_user_dormitory ud on dor.id = ud.dormitoryId
+        left join d_building on dor.building_id = d_building.id) d on u.id in (d.userid)
+        where
+        <if test="floor!=null">
+            dormitory_number like concat(#{floor},'__')
+        </if>
+        <if test="ew != null">
+            <if test="ew.nonEmptyOfWhere">
+                AND
+            </if>
+            ${ew.sqlSegment}
+        </if>
+    </select>
+</mapper>

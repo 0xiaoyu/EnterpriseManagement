@@ -1,17 +1,17 @@
 /*
  Navicat Premium Data Transfer
 
- Source Server         : yu
+ Source Server         : localhost
  Source Server Type    : MySQL
- Source Server Version : 80027 (8.0.27)
+ Source Server Version : 80033
  Source Host           : localhost:3306
  Source Schema         : enterprise
 
  Target Server Type    : MySQL
- Target Server Version : 80027 (8.0.27)
+ Target Server Version : 80033
  File Encoding         : 65001
 
- Date: 18/09/2023 23:28:15
+ Date: 20/09/2023 20:13:38
 */
 
 SET NAMES utf8mb4;
@@ -27,7 +27,7 @@ CREATE TABLE `clock_log`  (
   `status` tinyint NOT NULL DEFAULT 0 COMMENT '状态,0上班打卡',
   `day_time` date NOT NULL COMMENT '创建时间,记录哪一天打的卡',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '打卡记录表' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '打卡记录表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of clock_log
@@ -44,7 +44,7 @@ CREATE TABLE `d_building`  (
   `latitude` double NULL DEFAULT NULL,
   `longitude` double NULL DEFAULT NULL,
   `maxroom` int NULL DEFAULT NULL
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of d_building
@@ -71,7 +71,7 @@ CREATE TABLE `pay_log`  (
   `update_time` timestamp NULL DEFAULT NULL,
   `status` tinyint NULL DEFAULT NULL,
   `type` tinyint NULL DEFAULT NULL
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of pay_log
@@ -142,7 +142,7 @@ CREATE TABLE `sys_dict_type`  (
   `create_time` datetime NULL DEFAULT NULL COMMENT '创建时间',
   `update_time` datetime NULL DEFAULT NULL COMMENT '更新时间',
   PRIMARY KEY (`id`) USING BTREE,
-  UNIQUE INDEX `type_code`(`code` ASC) USING BTREE
+  UNIQUE INDEX `type_code`(`code`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 89 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '字典类型表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
@@ -170,59 +170,72 @@ CREATE TABLE `sys_menu`  (
   `create_time` datetime NULL DEFAULT NULL COMMENT '创建时间',
   `update_time` datetime NULL DEFAULT NULL COMMENT '更新时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 103 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '菜单管理' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 116 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '菜单管理' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of sys_menu
 -- ----------------------------
-INSERT INTO `sys_menu` VALUES (1, 0, '0', '系统管理', 2, '/system', 'Layout', NULL, 1, 1, 'system', '/system/user', '2021-08-28 09:12:21', '2021-08-28 09:12:21');
-INSERT INTO `sys_menu` VALUES (2, 1, '0,1', '用户管理', 1, 'user', 'system/user/index', NULL, 1, 1, 'user', NULL, '2021-08-28 09:12:21', '2021-08-28 09:12:21');
-INSERT INTO `sys_menu` VALUES (3, 1, '0,1', '角色管理', 1, 'role', 'system/role/index', NULL, 1, 2, 'role', NULL, '2021-08-28 09:12:21', '2021-08-28 09:12:21');
-INSERT INTO `sys_menu` VALUES (4, 1, '0,1', '菜单管理', 1, 'menu', 'system/menu/index', NULL, 1, 3, 'menu', NULL, '2021-08-28 09:12:21', '2021-08-28 09:12:21');
-INSERT INTO `sys_menu` VALUES (5, 1, '0,1', '部门管理', 1, 'dept', 'system/dept/index', NULL, 1, 4, 'tree', NULL, '2021-08-28 09:12:21', '2021-08-28 09:12:21');
-INSERT INTO `sys_menu` VALUES (6, 1, '0,1', '字典管理', 1, 'dict', 'system/dict/index', NULL, 1, 5, 'dict', NULL, '2021-08-28 09:12:21', '2021-08-28 09:12:21');
-INSERT INTO `sys_menu` VALUES (20, 0, '0', '多级菜单', 2, '/multi-level', 'Layout', NULL, 1, 9, 'multi_level', '/multi-level/multi-level1', '2022-02-16 23:11:00', '2022-02-16 23:11:00');
-INSERT INTO `sys_menu` VALUES (21, 20, '0,20', '菜单一级', 2, 'multi-level1', 'demo/multi-level/level1', NULL, 1, 1, '', '/multi-level/multi-level2', '2022-02-16 23:13:38', '2022-02-16 23:13:38');
-INSERT INTO `sys_menu` VALUES (22, 21, '0,20,21', '菜单二级', 2, 'multi-level2', 'demo/multi-level/children/level2', NULL, 1, 1, '', '/multi-level/multi-level2/multi-level3-1', '2022-02-16 23:14:23', '2022-02-16 23:14:23');
-INSERT INTO `sys_menu` VALUES (23, 22, '0,20,21,22', '菜单三级-1', 1, 'multi-level3-1', 'demo/multi-level/children/children/level3-1', NULL, 1, 1, '', '', '2022-02-16 23:14:51', '2022-02-16 23:14:51');
-INSERT INTO `sys_menu` VALUES (24, 22, '0,20,21,22', '菜单三级-2', 1, 'multi-level3-2', 'demo/multi-level/children/children/level3-2', NULL, 1, 2, '', '', '2022-02-16 23:15:08', '2022-02-16 23:15:08');
-INSERT INTO `sys_menu` VALUES (26, 0, '0', '外部链接', 2, '/external-link', 'Layout', NULL, 1, 8, 'link', 'noredirect', '2022-02-17 22:51:20', '2022-02-17 22:51:20');
-INSERT INTO `sys_menu` VALUES (30, 26, '0,26', 'document', 3, 'https://juejin.cn/post/7228990409909108793', '', NULL, 1, 1, 'document', '', '2022-02-18 00:01:40', '2022-02-18 00:01:40');
-INSERT INTO `sys_menu` VALUES (31, 2, '0,1,2', '用户新增', 4, '', NULL, 'sys:user:add', 1, 1, '', '', '2022-10-23 11:04:08', '2022-10-23 11:04:11');
-INSERT INTO `sys_menu` VALUES (32, 2, '0,1,2', '用户编辑', 4, '', NULL, 'sys:user:edit', 1, 2, '', '', '2022-10-23 11:04:08', '2022-10-23 11:04:11');
-INSERT INTO `sys_menu` VALUES (33, 2, '0,1,2', '用户删除', 4, '', NULL, 'sys:user:delete', 1, 3, '', '', '2022-10-23 11:04:08', '2022-10-23 11:04:11');
-INSERT INTO `sys_menu` VALUES (36, 0, '0', '组件封装', 2, '/component', 'Layout', NULL, 1, 10, 'menu', '', '2022-10-31 09:18:44', '2022-10-31 09:18:47');
-INSERT INTO `sys_menu` VALUES (37, 36, '0,36', '富文本编辑器', 1, 'wang-editor', 'demo/wang-editor', NULL, 1, 1, '', '', NULL, NULL);
-INSERT INTO `sys_menu` VALUES (38, 36, '0,36', '图片上传', 1, 'upload', 'demo/upload', NULL, 1, 2, '', '', '2022-11-20 23:16:30', '2022-11-20 23:16:32');
-INSERT INTO `sys_menu` VALUES (39, 36, '0,36', '图标选择器', 1, 'icon-selector', 'demo/icon-selector', NULL, 1, 3, '', '', '2022-11-20 23:16:30', '2022-11-20 23:16:32');
-INSERT INTO `sys_menu` VALUES (40, 0, '0', '接口', 2, '/api', 'Layout', NULL, 1, 7, 'api', '', '2022-02-17 22:51:20', '2022-02-17 22:51:20');
-INSERT INTO `sys_menu` VALUES (41, 40, '0,40', '接口文档', 1, 'apidoc', 'demo/api-doc', NULL, 1, 1, 'api', '', '2022-02-17 22:51:20', '2022-02-17 22:51:20');
-INSERT INTO `sys_menu` VALUES (70, 3, '0,1,3', '角色新增', 4, '', NULL, 'sys:role:add', 1, 1, '', NULL, '2023-05-20 23:39:09', '2023-05-20 23:39:09');
-INSERT INTO `sys_menu` VALUES (71, 3, '0,1,3', '角色编辑', 4, '', NULL, 'sys:role:edit', 1, 2, '', NULL, '2023-05-20 23:40:31', '2023-05-20 23:40:31');
-INSERT INTO `sys_menu` VALUES (72, 3, '0,1,3', '角色删除', 4, '', NULL, 'sys:role:delete', 1, 3, '', NULL, '2023-05-20 23:41:08', '2023-05-20 23:41:08');
-INSERT INTO `sys_menu` VALUES (73, 4, '0,1,4', '菜单新增', 4, '', NULL, 'sys:menu:add', 1, 1, '', NULL, '2023-05-20 23:41:35', '2023-05-20 23:41:35');
-INSERT INTO `sys_menu` VALUES (74, 4, '0,1,4', '菜单编辑', 4, '', NULL, 'sys:menu:edit', 1, 3, '', NULL, '2023-05-20 23:41:58', '2023-05-20 23:41:58');
-INSERT INTO `sys_menu` VALUES (75, 4, '0,1,4', '菜单删除', 4, '', NULL, 'sys:menu:delete', 1, 3, '', NULL, '2023-05-20 23:44:18', '2023-05-20 23:44:18');
-INSERT INTO `sys_menu` VALUES (76, 5, '0,1,5', '部门新增', 4, '', NULL, 'sys:dept:add', 1, 1, '', NULL, '2023-05-20 23:45:00', '2023-05-20 23:45:00');
-INSERT INTO `sys_menu` VALUES (77, 5, '0,1,5', '部门编辑', 4, '', NULL, 'sys:dept:edit', 1, 2, '', NULL, '2023-05-20 23:46:16', '2023-05-20 23:46:16');
-INSERT INTO `sys_menu` VALUES (78, 5, '0,1,5', '部门删除', 4, '', NULL, 'sys:dept:delete', 1, 3, '', NULL, '2023-05-20 23:46:36', '2023-05-20 23:46:36');
-INSERT INTO `sys_menu` VALUES (79, 6, '0,1,6', '字典类型新增', 4, '', NULL, 'sys:dict_type:add', 1, 1, '', NULL, '2023-05-21 00:16:06', '2023-05-21 00:16:06');
-INSERT INTO `sys_menu` VALUES (81, 6, '0,1,6', '字典类型编辑', 4, '', NULL, 'sys:dict_type:edit', 1, 2, '', NULL, '2023-05-21 00:27:37', '2023-05-21 00:27:37');
-INSERT INTO `sys_menu` VALUES (84, 6, '0,1,6', '字典类型删除', 4, '', NULL, 'sys:dict_type:delete', 1, 3, '', NULL, '2023-05-21 00:29:39', '2023-05-21 00:29:39');
-INSERT INTO `sys_menu` VALUES (85, 6, '0,1,6', '字典数据新增', 4, '', NULL, 'sys:dict:add', 1, 4, '', NULL, '2023-05-21 00:46:56', '2023-05-21 00:47:06');
-INSERT INTO `sys_menu` VALUES (86, 6, '0,1,6', '字典数据编辑', 4, '', NULL, 'sys:dict:edit', 1, 5, '', NULL, '2023-05-21 00:47:36', '2023-05-21 00:47:36');
-INSERT INTO `sys_menu` VALUES (87, 6, '0,1,6', '字典数据删除', 4, '', NULL, 'sys:dict:delete', 1, 6, '', NULL, '2023-05-21 00:48:10', '2023-05-21 00:48:20');
-INSERT INTO `sys_menu` VALUES (88, 2, '0,1,2', '重置密码', 4, '', NULL, 'sys:user:reset_pwd', 1, 4, '', NULL, '2023-05-21 00:49:18', '2023-05-21 00:49:18');
-INSERT INTO `sys_menu` VALUES (89, 0, '0', '功能演示', 2, '/function', 'Layout', NULL, 1, 11, 'menu', '', '2022-10-31 09:18:44', '2022-10-31 09:18:47');
-INSERT INTO `sys_menu` VALUES (90, 89, '0,89', 'Websocket', 1, 'websocket', 'demo/websocket', NULL, 1, 3, '', '', '2022-11-20 23:16:30', '2022-11-20 23:16:32');
-INSERT INTO `sys_menu` VALUES (91, 89, '0,89', '敬请期待...', 2, 'other', 'demo/other', NULL, 1, 4, '', '', '2022-11-20 23:16:30', '2022-11-20 23:16:32');
-INSERT INTO `sys_menu` VALUES (92, 36, '0,36', '标签输入框', 1, 'taginput', 'demo/taginput', NULL, 1, 5, '', '', '2022-11-20 23:16:30', '2022-11-20 23:16:32');
-INSERT INTO `sys_menu` VALUES (93, 36, '0,36', '签名', 1, 'signature', 'demo/signature', NULL, 1, 6, '', '', '2022-11-20 23:16:30', '2022-11-20 23:16:32');
-INSERT INTO `sys_menu` VALUES (94, 36, '0,36', '表格', 1, 'table', 'demo/table', NULL, 1, 7, '', '', '2022-11-20 23:16:30', '2022-11-20 23:16:32');
-INSERT INTO `sys_menu` VALUES (95, 36, '0,36', '字典组件', 1, 'dict-demo', 'demo/dict', NULL, 1, 4, '', '', '2022-11-20 23:16:30', '2022-11-20 23:16:32');
-INSERT INTO `sys_menu` VALUES (96, 89, '0,89', 'Permission', 1, 'permission', 'demo/permission/page', NULL, 1, 1, '', '', '2022-11-20 23:16:30', '2022-11-20 23:16:32');
-INSERT INTO `sys_menu` VALUES (97, 89, '0,89', 'Icons', 1, 'icon-demo', 'demo/icons', NULL, 1, 2, '', '', '2022-11-20 23:16:30', '2022-11-20 23:16:32');
-INSERT INTO `sys_menu` VALUES (102, 26, '0,26', '平台文档(内嵌)', 3, 'internal-doc', 'demo/internal-doc', NULL, 1, 1, 'document', '', '2022-02-18 00:01:40', '2022-02-18 00:01:40');
+INSERT INTO `sys_menu` VALUES (1, 0, '0', '系统管理', 2, '/system', 'Layout', NULL, 1, 1, 'system', '/system/user', '2023-08-19 21:12:21', '2023-08-19 21:12:21');
+INSERT INTO `sys_menu` VALUES (2, 1, '0,1', '用户管理', 1, 'user', 'system/user/index', NULL, 1, 1, 'user', NULL, '2023-08-19 21:12:21', '2023-08-26 23:23:57');
+INSERT INTO `sys_menu` VALUES (3, 1, '0,1', '角色管理', 1, 'role', 'system/role/index', NULL, 1, 2, 'role', NULL, '2023-08-19 21:12:21', '2023-08-19 21:12:21');
+INSERT INTO `sys_menu` VALUES (4, 1, '0,1', '菜单管理', 1, 'menu', 'system/menu/index', NULL, 1, 3, 'menu', NULL, '2023-08-19 21:12:21', '2023-08-19 21:12:21');
+INSERT INTO `sys_menu` VALUES (5, 1, '0,1', '部门管理', 1, 'dept', 'system/dept/index', NULL, 1, 4, 'tree', NULL, '2023-08-19 21:12:21', '2023-08-19 21:12:21');
+INSERT INTO `sys_menu` VALUES (6, 1, '0,1', '字典管理', 1, 'dict', 'system/dict/index', NULL, 1, 5, 'dict', NULL, '2023-08-19 21:12:21', '2023-08-19 21:12:21');
+INSERT INTO `sys_menu` VALUES (20, 0, '0', '多级菜单', 2, '/multi-level', 'Layout', NULL, 0, 9, 'multi_level', '/multi-level/multi-level1', '2023-08-19 21:12:21', '2023-08-19 21:12:21');
+INSERT INTO `sys_menu` VALUES (21, 20, '0,20', '菜单一级', 2, 'multi-level1', 'demo/multi-level/level1', NULL, 0, 1, '', '/multi-level/multi-level2', '2023-08-19 21:12:21', '2023-08-19 21:12:21');
+INSERT INTO `sys_menu` VALUES (22, 21, '0,20,21', '菜单二级', 2, 'multi-level2', 'demo/multi-level/children/level2', NULL, 0, 1, '', '/multi-level/multi-level2/multi-level3-1', '2023-08-19 21:12:21', '2023-08-19 21:12:21');
+INSERT INTO `sys_menu` VALUES (23, 22, '0,20,21,22', '菜单三级-1', 1, 'multi-level3-1', 'demo/multi-level/children/children/level3-1', NULL, 0, 1, '', '', '2023-08-19 21:12:21', '2023-08-19 21:12:21');
+INSERT INTO `sys_menu` VALUES (24, 22, '0,20,21,22', '菜单三级-2', 1, 'multi-level3-2', 'demo/multi-level/children/children/level3-2', NULL, 0, 2, '', '', '2023-08-19 21:12:21', '2023-08-19 21:12:21');
+INSERT INTO `sys_menu` VALUES (26, 0, '0', '外部链接', 2, '/external-link', 'Layout', NULL, 0, 8, 'link', 'noredirect', '2023-08-19 21:12:21', '2023-08-19 21:12:21');
+INSERT INTO `sys_menu` VALUES (30, 26, '0,26', 'document', 3, 'https://juejin.cn/post/7228990409909108793', '', NULL, 0, 1, 'document', '', '2023-08-19 21:12:21', '2023-08-19 21:12:21');
+INSERT INTO `sys_menu` VALUES (31, 2, '0,1,2', '用户新增', 4, '', NULL, 'sys:user:add', 1, 1, '', '', '2023-08-19 21:12:21', '2023-08-19 21:12:21');
+INSERT INTO `sys_menu` VALUES (32, 2, '0,1,2', '用户编辑', 4, '', NULL, 'sys:user:edit', 1, 2, '', '', '2023-08-19 21:12:21', '2023-08-19 21:12:21');
+INSERT INTO `sys_menu` VALUES (33, 2, '0,1,2', '用户删除', 4, '', NULL, 'sys:user:delete', 1, 3, '', '', '2023-08-26 10:41:15', '2023-08-27 15:05:17');
+INSERT INTO `sys_menu` VALUES (36, 0, '0', '组件封装', 2, '/component', 'Layout', NULL, 0, 10, 'menu', '', '2023-08-26 10:43:10', '2023-08-31 23:00:46');
+INSERT INTO `sys_menu` VALUES (37, 36, '0,36', '富文本编辑器', 1, 'wang-editor', 'demo/wang-editor', NULL, 0, 1, '', '', '2023-08-26 10:46:08', '2023-08-30 21:14:50');
+INSERT INTO `sys_menu` VALUES (38, 36, '0,36', '图片上传', 1, 'upload', 'demo/upload', NULL, 0, 2, '', '', '2023-08-26 10:46:09', '2023-09-07 16:41:07');
+INSERT INTO `sys_menu` VALUES (39, 36, '0,36', '图标选择器', 1, 'icon-selector', 'demo/icon-selector', NULL, 0, 3, '', '', '2023-08-26 10:48:13', '2023-08-26 10:48:13');
+INSERT INTO `sys_menu` VALUES (40, 0, '0', '接口', 2, '/api', 'Layout', NULL, 1, 7, 'api', '', '2023-08-26 10:52:26', '2023-08-30 21:18:44');
+INSERT INTO `sys_menu` VALUES (41, 40, '0,40', '接口文档', 1, 'apidoc', 'demo/api-doc', NULL, 1, 1, 'api', '', '2023-08-26 10:52:28', '2023-08-30 21:18:29');
+INSERT INTO `sys_menu` VALUES (70, 3, '0,1,3', '角色新增', 4, '', NULL, 'sys:role:add', 1, 1, '', NULL, '2023-08-26 10:53:55', '2023-08-27 15:05:51');
+INSERT INTO `sys_menu` VALUES (71, 3, '0,1,3', '角色编辑', 4, '', NULL, 'sys:role:edit', 1, 2, '', NULL, '2023-08-26 10:54:06', '2023-08-30 21:21:55');
+INSERT INTO `sys_menu` VALUES (72, 3, '0,1,3', '角色删除', 4, '', NULL, 'sys:role:delete', 1, 3, '', NULL, '2023-08-26 11:00:38', '2023-08-30 21:20:51');
+INSERT INTO `sys_menu` VALUES (73, 4, '0,1,4', '菜单新增', 4, '', NULL, 'sys:menu:add', 1, 1, '', NULL, '2023-08-26 15:09:05', '2023-08-26 15:09:05');
+INSERT INTO `sys_menu` VALUES (74, 4, '0,1,4', '菜单编辑', 4, '', NULL, 'sys:menu:edit', 1, 3, '', NULL, '2023-08-26 15:09:05', '2023-08-26 23:23:18');
+INSERT INTO `sys_menu` VALUES (75, 4, '0,1,4', '菜单删除', 4, '', NULL, 'sys:menu:delete', 1, 3, '', NULL, '2023-08-26 15:09:05', '2023-08-26 15:09:05');
+INSERT INTO `sys_menu` VALUES (76, 5, '0,1,5', '部门新增', 4, '', NULL, 'sys:dept:add', 1, 1, '', NULL, '2023-08-26 15:09:05', '2023-08-26 15:09:05');
+INSERT INTO `sys_menu` VALUES (77, 5, '0,1,5', '部门编辑', 4, '', NULL, 'sys:dept:edit', 1, 2, '', NULL, '2023-08-26 15:09:05', '2023-08-26 15:09:05');
+INSERT INTO `sys_menu` VALUES (78, 5, '0,1,5', '部门删除', 4, '', NULL, 'sys:dept:delete', 1, 3, '', NULL, '2023-08-26 15:09:05', '2023-08-26 15:09:05');
+INSERT INTO `sys_menu` VALUES (79, 6, '0,1,6', '字典类型新增', 4, '', NULL, 'sys:dict_type:add', 1, 1, '', NULL, '2023-08-26 15:09:05', '2023-08-26 15:09:05');
+INSERT INTO `sys_menu` VALUES (81, 6, '0,1,6', '字典类型编辑', 4, '', NULL, 'sys:dict_type:edit', 1, 2, '', NULL, '2023-08-26 10:43:10', '2023-08-26 10:43:11');
+INSERT INTO `sys_menu` VALUES (84, 6, '0,1,6', '字典类型删除', 4, '', NULL, 'sys:dict_type:delete', 1, 3, '', NULL, '2023-08-29 08:42:47', '2023-08-29 08:59:16');
+INSERT INTO `sys_menu` VALUES (85, 6, '0,1,6', '字典数据新增', 4, '', NULL, 'sys:dict:add', 1, 4, '', NULL, '2023-08-29 08:58:52', '2023-08-29 08:58:52');
+INSERT INTO `sys_menu` VALUES (86, 6, '0,1,6', '字典数据编辑', 4, '', NULL, 'sys:dict:edit', 1, 5, '', NULL, '2023-08-30 21:10:18', '2023-08-30 21:49:35');
+INSERT INTO `sys_menu` VALUES (87, 6, '0,1,6', '字典数据删除', 4, '', NULL, 'sys:dict:delete', 1, 6, '', NULL, '2023-08-31 23:01:02', '2023-08-31 23:01:02');
+INSERT INTO `sys_menu` VALUES (88, 2, '0,1,2', '重置密码', 4, '', NULL, 'sys:user:reset_pwd', 1, 4, '', NULL, '2023-08-31 23:01:26', '2023-08-31 23:01:26');
+INSERT INTO `sys_menu` VALUES (89, 0, '0', '功能演示', 2, '/function', 'Layout', NULL, 0, 11, 'menu', '', '2023-08-31 23:02:23', '2023-08-31 23:02:23');
+INSERT INTO `sys_menu` VALUES (90, 89, '0,89', 'Websocket', 1, 'websocket', 'demo/websocket', NULL, 0, 3, '', '', '2023-08-31 23:02:38', '2023-08-31 23:02:38');
+INSERT INTO `sys_menu` VALUES (91, 89, '0,89', '敬请期待...', 2, 'other', 'demo/other', NULL, 0, 4, '', '', '2023-08-31 23:11:57', '2023-09-01 20:30:43');
+INSERT INTO `sys_menu` VALUES (92, 36, '0,36', '标签输入框', 1, 'taginput', 'demo/taginput', NULL, 1, 5, '', '', '2023-09-01 20:30:24', '2023-09-01 20:30:31');
+INSERT INTO `sys_menu` VALUES (93, 36, '0,36', '签名', 1, 'signature', 'demo/signature', NULL, 1, 6, '', '', '2023-09-01 20:31:25', '2023-09-01 20:31:25');
+INSERT INTO `sys_menu` VALUES (94, 36, '0,36', '表格', 1, 'table', 'demo/table', NULL, 1, 7, '', '', '2023-09-01 20:31:48', '2023-09-01 20:31:48');
+INSERT INTO `sys_menu` VALUES (95, 36, '0,36', '字典组件', 1, 'dict-demo', 'demo/dict', NULL, 1, 4, '', '', '2023-09-01 20:32:11', '2023-09-01 20:32:11');
+INSERT INTO `sys_menu` VALUES (96, 89, '0,89', 'Permission', 1, 'permission', 'demo/permission/page', NULL, 0, 1, '', '', '2023-09-07 14:23:51', '2023-09-07 14:23:51');
+INSERT INTO `sys_menu` VALUES (97, 89, '0,89', 'Icons', 1, 'icon-demo', 'demo/icons', NULL, 0, 2, '', '', '2023-09-07 16:42:23', '2023-09-07 16:42:23');
+INSERT INTO `sys_menu` VALUES (102, 26, '0,26', '平台文档(内嵌)', 3, 'internal-doc', 'demo/internal-doc', NULL, 0, 1, 'document', '', '2023-09-07 16:43:25', '2023-09-07 16:43:25');
+INSERT INTO `sys_menu` VALUES (103, 0, '0', '宿舍管理', 2, '/dormitory', 'Layout', NULL, 1, 4, 'client', NULL, '2023-08-26 10:53:55', '2023-08-27 15:05:51');
+INSERT INTO `sys_menu` VALUES (104, 103, '0,103', '宿舍列表', 1, 'dList', 'dormitory/dList/index', NULL, 1, 1, 'dormitory', NULL, '2023-08-26 10:54:06', '2023-08-30 21:21:55');
+INSERT INTO `sys_menu` VALUES (105, 103, '0,103', '门禁管理', 1, 'access', 'dormitory/access/index', NULL, 1, 2, 'accessManage', NULL, '2023-08-26 11:00:38', '2023-08-30 21:20:51');
+INSERT INTO `sys_menu` VALUES (106, 103, '0,103', '楼管理', 1, 'building', 'dormitory/building/index', NULL, 1, 3, 'homepage', NULL, '2023-08-30 21:10:18', '2023-08-30 21:49:35');
+INSERT INTO `sys_menu` VALUES (107, 108, '0,108', '宿舍地图', 1, '/navigation-map', 'student/navigation-map/index', NULL, 1, 8, 'map', NULL, '2023-08-31 23:11:57', '2023-09-01 20:30:43');
+INSERT INTO `sys_menu` VALUES (108, 0, '0', '宿舍导航', 2, '/student', 'Layout', NULL, 1, 8, 'publish', '/navigation-map', '2023-09-01 20:30:24', '2023-09-01 20:30:31');
+INSERT INTO `sys_menu` VALUES (109, 0, '0', '打卡', 2, '/pass', 'Layout', NULL, 1, 2, 'pass', '/passQRCode', '2023-09-01 20:31:25', '2023-09-19 14:54:34');
+INSERT INTO `sys_menu` VALUES (110, 109, '0,109', '进出二维码', 1, '/passQRCode', 'pass/passQRCode/index', NULL, 1, 1, 'passQR', NULL, '2023-09-01 20:31:48', '2023-09-01 20:31:48');
+INSERT INTO `sys_menu` VALUES (111, 109, '0,109', '扫描二维码', 1, '/scanQRCode', 'pass/scanQRCode/index', NULL, 1, 2, 'scan', NULL, '2023-09-01 20:32:11', '2023-09-01 20:32:11');
+INSERT INTO `sys_menu` VALUES (112, 0, '0', '日常管理', 2, '/work', 'Layout', NULL, 1, 2, 'advert', '/wages', '2023-09-19 14:53:47', '2023-09-19 14:53:47');
+INSERT INTO `sys_menu` VALUES (113, 112, '0,112', '打卡管理', 1, '/wages', 'wor/wages/index', NULL, 1, 1, 'brand', NULL, '2023-09-19 14:54:17', '2023-09-19 14:54:17');
+INSERT INTO `sys_menu` VALUES (114, 112, '0,112', '工资管理', 1, 'wages', 'work/wages/index', NULL, 1, 1, 'cangkuyonghu', NULL, '2023-09-19 14:55:34', '2023-09-19 14:55:34');
+INSERT INTO `sys_menu` VALUES (115, 112, '0,112', '违规记录', 1, 'wages', 'work/wages/index', NULL, 1, 1, 'violation', NULL, '2023-09-19 14:56:02', '2023-09-19 14:56:02');
 
 -- ----------------------------
 -- Table structure for sys_role
@@ -239,7 +252,7 @@ CREATE TABLE `sys_role`  (
   `create_time` datetime NULL DEFAULT NULL COMMENT '更新时间',
   `update_time` datetime NULL DEFAULT NULL COMMENT '创建时间',
   PRIMARY KEY (`id`) USING BTREE,
-  UNIQUE INDEX `name`(`name` ASC) USING BTREE
+  UNIQUE INDEX `name`(`name`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 13 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '角色表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
@@ -353,6 +366,7 @@ INSERT INTO `sys_role_menu` VALUES (2, 95);
 INSERT INTO `sys_role_menu` VALUES (2, 96);
 INSERT INTO `sys_role_menu` VALUES (2, 97);
 INSERT INTO `sys_role_menu` VALUES (2, 102);
+INSERT INTO `sys_role_menu` VALUES (1, 1);
 
 -- ----------------------------
 -- Table structure for sys_user
@@ -373,16 +387,16 @@ CREATE TABLE `sys_user`  (
   `create_time` datetime NULL DEFAULT NULL COMMENT '创建时间',
   `update_time` datetime NULL DEFAULT NULL COMMENT '更新时间',
   PRIMARY KEY (`id`) USING BTREE,
-  UNIQUE INDEX `login_name`(`username` ASC) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '用户信息表' ROW_FORMAT = DYNAMIC;
+  UNIQUE INDEX `login_name`(`username`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 288 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '用户信息表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of sys_user
 -- ----------------------------
-INSERT INTO `sys_user` VALUES (1, 'root', '有来技术', 0, '$2a$10$xVWsNOhHrCxh5UbpCE7/HuJ.PAOKcYAqRxD2CO2nVnJS.IAXkr5aq', NULL, 'https://oss.youlai.tech/youlai-boot/2023/05/16/811270ef31f548af9cffc026dfc3777b.gif', '17621590365', 1, 'youlaitech@163.com', 0, NULL, NULL);
-INSERT INTO `sys_user` VALUES (2, 'admin', '系统管理员', 1, '$2a$10$xVWsNOhHrCxh5UbpCE7/HuJ.PAOKcYAqRxD2CO2nVnJS.IAXkr5aq', 1, 'https://oss.youlai.tech/youlai-boot/2023/05/16/811270ef31f548af9cffc026dfc3777b.gif', '17621210366', 1, '', 0, '2019-10-10 13:41:22', '2022-07-31 12:39:30');
-INSERT INTO `sys_user` VALUES (3, 'test', '测试小用户', 1, '$2a$10$xVWsNOhHrCxh5UbpCE7/HuJ.PAOKcYAqRxD2CO2nVnJS.IAXkr5aq', 3, 'https://oss.youlai.tech/youlai-boot/2023/05/16/811270ef31f548af9cffc026dfc3777b.gif', '17621210366', 1, 'youlaitech@163.com', 0, '2021-06-05 01:31:29', '2021-06-05 01:31:29');
-INSERT INTO `sys_user` VALUES (287, '123', '123', 1, '$2a$10$mVoBVqm1837huf7kcN0wS.GVYKEFv0arb7GvzfFXoTyqDlcRzT.6i', 1, '', NULL, 1, NULL, 1, '2023-05-21 14:11:19', '2023-05-21 14:11:25');
+INSERT INTO `sys_user` VALUES (1, 'root', 'root', 0, '$2a$10$xVWsNOhHrCxh5UbpCE7/HuJ.PAOKcYAqRxD2CO2nVnJS.IAXkr5aq', NULL, '/defalut.gif', '17621590365', 1, 'youlaitech@163.com', 0, '2023-09-19 13:28:43', '2023-09-19 13:28:44');
+INSERT INTO `sys_user` VALUES (2, 'admin', '系统管理员', 1, '$2a$10$xVWsNOhHrCxh5UbpCE7/HuJ.PAOKcYAqRxD2CO2nVnJS.IAXkr5aq', 1, '/defalut.gif', '17621210366', 1, '', 0, '2023-09-19 13:28:43', '2023-09-19 13:28:44');
+INSERT INTO `sys_user` VALUES (3, 'test', '测试小用户', 1, '$2a$10$xVWsNOhHrCxh5UbpCE7/HuJ.PAOKcYAqRxD2CO2nVnJS.IAXkr5aq', 3, '/yAvatar/f7a16960bbbf457fae6efb1c194494e5.jpg', '17621210366', 1, 'youlaitech@163.com', 0, '2023-09-19 13:28:43', '2023-09-19 13:28:44');
+INSERT INTO `sys_user` VALUES (287, '123', '123', 1, '$2a$10$mVoBVqm1837huf7kcN0wS.GVYKEFv0arb7GvzfFXoTyqDlcRzT.6i', 1, '/defalut.gif', NULL, 1, NULL, 1, '2023-09-19 13:28:43', '2023-09-19 13:28:44');
 
 -- ----------------------------
 -- Table structure for sys_user_role
@@ -415,7 +429,7 @@ CREATE TABLE `tb_dormitory`  (
   `water` double NULL DEFAULT NULL,
   `e_status` tinyint NULL DEFAULT NULL,
   `w_status` tinyint NULL DEFAULT NULL
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of tb_dormitory
@@ -875,12 +889,14 @@ INSERT INTO `tb_dormitory` VALUES (462, 5, 514, 4, 47.86, 6.49, 0, 0);
 DROP TABLE IF EXISTS `tb_user_dormitory`;
 CREATE TABLE `tb_user_dormitory`  (
   `userid` bigint NOT NULL,
-  `dormitoryId` bigint NOT NULL COMMENT '宿舍id'
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '人员的宿舍' ROW_FORMAT = Dynamic;
+  `dormitoryId` bigint NOT NULL COMMENT '宿舍id',
+  PRIMARY KEY (`userid`, `dormitoryId`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '人员的宿舍' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of tb_user_dormitory
 -- ----------------------------
+INSERT INTO `tb_user_dormitory` VALUES (1, 1);
 
 -- ----------------------------
 -- Table structure for work_log
@@ -893,7 +909,7 @@ CREATE TABLE `work_log`  (
   `day_time` date NOT NULL COMMENT '当天',
   `type` tinyint NOT NULL DEFAULT 0 COMMENT '类型,0正常',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '工作时间记录' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '工作时间记录' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of work_log

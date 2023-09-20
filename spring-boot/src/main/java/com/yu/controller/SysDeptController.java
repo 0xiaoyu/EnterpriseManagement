@@ -58,7 +58,7 @@ public class SysDeptController {
 
     @Operation(summary = "新增部门", security = {@SecurityRequirement(name = "Authorization")})
     @PostMapping
-    @PreAuthorize("@ss.hasPerm('sys:dept:add')")
+    @PreAuthorize("@security.hasPerm('sys:dept:add')")
     @PreventDuplicateSubmit
     public Result saveDept(
             @Valid @RequestBody DeptForm formData
@@ -69,7 +69,7 @@ public class SysDeptController {
 
     @Operation(summary = "修改部门", security = {@SecurityRequirement(name = "Authorization")})
     @PutMapping(value = "/{deptId}")
-    @PreAuthorize("@ss.hasPerm('sys:dept:edit')")
+    @PreAuthorize("@security.hasPerm('sys:dept:edit')")
     public Result updateDept(
             @PathVariable Long deptId,
             @Valid @RequestBody DeptForm formData
@@ -80,7 +80,7 @@ public class SysDeptController {
 
     @Operation(summary = "删除部门", security = {@SecurityRequirement(name = "Authorization")})
     @DeleteMapping("/{ids}")
-    @PreAuthorize("@ss.hasPerm('sys:dept:delete')")
+    @PreAuthorize("@security.hasPerm('sys:dept:delete')")
     public Result deleteDepartments(
             @Parameter(description ="部门ID，多个以英文逗号(,)分割") @PathVariable("ids") String ids
     ) {

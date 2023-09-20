@@ -140,7 +140,7 @@ import {
   getPassPage,
   modifyTime,
 } from "@/api/accessLog";
-import dayjs from "dayjs";
+import {dayjs} from "element-plus";
 
 const date = ref<Array<Date>>();
 const queryParams = reactive<PassLogPageQuery>({
@@ -199,7 +199,6 @@ function handleQuery() {
   loading.value = true;
   queryParams.startTime = date.value?.[0];
   queryParams.endTime = date.value?.[1];
-  console.log(queryParams.startTime);
   getPassPage(queryParams)
     .then(({ data }) => {
       passList.value = data.list;

@@ -18,7 +18,7 @@ import java.util.Set;
  * @author yu
  * @since 2023/9/16
  */
-@Component("ss")
+@Component("security")
 @RequiredArgsConstructor
 @Slf4j
 public class PermissionService {

@@ -1,6 +1,10 @@
 import request from "@/utils/request";
 import { AxiosPromise } from "axios";
 import { UserForm, UserInfo, UserPageVO, UserQuery } from "./types";
+import {LoginData} from "@/api/auth/types";
+
+
+const baseUrl = "/api/v1/users";
 
 /**
  * 登录成功后获取用户信息（昵称、头像、权限集合和角色集合）
@@ -38,6 +42,23 @@ export function getUserForm(userId: number): AxiosPromise<UserForm> {
     method: "get",
   });
 }
+
+export function resetPassword(params: LoginData | undefined) {
+  return request({
+    url: baseUrl + "/resetPassword",
+    method: "patch",
+    params,
+  });
+}
+
+export function getEmailCode(email: string, type: string) {
+  return request({
+    url: baseUrl + "/getEmailVerifyCode",
+    method: "get",
+    params: {email, type},
+  });
+}
+
 
 /**
  * 添加用户

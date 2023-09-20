@@ -4,10 +4,10 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>com.youlai</groupId>
+    <groupId>com.yu</groupId>
     <artifactId>spring-boot</artifactId>
-    <version>2.4.0</version>
-    <description>基于Spring Boot 3快速构建的高效权限管理系统。</description>
+    <version>1.1.0</version>
+    <description>基于Spring Boot 3快速构建的企业权限管理系统。</description>
 
     <parent>
         <groupId>org.springframework.boot</groupId>
@@ -100,6 +100,11 @@
         <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-pool2</artifactId>
+        </dependency>
+        <!--SpringCache缓存 -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-cache</artifactId>
         </dependency>
 
         <dependency>

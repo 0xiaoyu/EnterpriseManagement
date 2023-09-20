@@ -47,7 +47,7 @@ public class SysRoleController {
  
     @Operation(summary = "新增角色",security = {@SecurityRequirement(name = "Authorization")})
     @PostMapping
-    @PreAuthorize("@ss.hasPerm('sys:role:add')")
+    @PreAuthorize("@security.hasPerm('sys:role:add')")
     @PreventDuplicateSubmit
     public Result addRole(@Valid @RequestBody RoleForm roleForm) {
         boolean result = roleService.saveRole(roleForm);
@@ -65,7 +65,7 @@ public class SysRoleController {
 
     @Operation(summary = "修改角色",security = {@SecurityRequirement(name = "Authorization")})
     @PutMapping(value = "/{id}")
-    @PreAuthorize("@ss.hasPerm('sys:role:edit')")
+    @PreAuthorize("@security.hasPerm('sys:role:edit')")
     public Result updateRole(@Valid @RequestBody RoleForm roleForm) {
         boolean result = roleService.saveRole(roleForm);
         return Result.judge(result);
@@ -73,7 +73,7 @@ public class SysRoleController {
 
     @Operation(summary = "删除角色",security = {@SecurityRequirement(name = "Authorization")})
     @DeleteMapping("/{ids}")
-    @PreAuthorize("@ss.hasPerm('sys:role:delete')")
+    @PreAuthorize("@security.hasPerm('sys:role:delete')")
     public Result deleteRoles(
             @Parameter(description ="删除角色，多个以英文逗号(,)分割") @PathVariable String ids
     ) {

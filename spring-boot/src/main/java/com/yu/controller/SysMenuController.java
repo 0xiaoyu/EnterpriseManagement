@@ -68,7 +68,7 @@ public class SysMenuController {
 
     @Operation(summary = "新增菜单",security = {@SecurityRequirement(name = "Authorization")})
     @PostMapping
-    @PreAuthorize("@ss.hasPerm('sys:menu:add')")
+    @PreAuthorize("@security.hasPerm('sys:menu:add')")
     @PreventDuplicateSubmit
     @CacheEvict(cacheNames = "system", key = "'routes'")
     public Result addMenu(@RequestBody MenuForm menuForm) {
@@ -78,7 +78,7 @@ public class SysMenuController {
 
     @Operation(summary = "修改菜单",security = {@SecurityRequirement(name = "Authorization")})
     @PutMapping(value = "/{id}")
-    @PreAuthorize("@ss.hasPerm('sys:menu:edit')")
+    @PreAuthorize("@security.hasPerm('sys:menu:edit')")
     @CacheEvict(cacheNames = "system", key = "'routes'")
     public Result updateMenu(
             @RequestBody MenuForm menuForm
@@ -89,7 +89,7 @@ public class SysMenuController {
 
     @Operation(summary = "删除菜单",security = {@SecurityRequirement(name = "Authorization")})
     @DeleteMapping("/{id}")
-    @PreAuthorize("@ss.hasPerm('sys:menu:delete')")
+    @PreAuthorize("@security.hasPerm('sys:menu:delete')")
     @CacheEvict(cacheNames = "system", key = "'routes'")
     public Result deleteMenu(
             @Parameter(description ="菜单ID，多个以英文(,)分割") @PathVariable("id") Long id
