@@ -1,17 +1,17 @@
 /*
  Navicat Premium Data Transfer
 
- Source Server         : localhost
+ Source Server         : yu
  Source Server Type    : MySQL
- Source Server Version : 80033
+ Source Server Version : 80027 (8.0.27)
  Source Host           : localhost:3306
  Source Schema         : enterprise
 
  Target Server Type    : MySQL
- Target Server Version : 80033
+ Target Server Version : 80027 (8.0.27)
  File Encoding         : 65001
 
- Date: 20/09/2023 20:13:38
+ Date: 22/09/2023 20:38:43
 */
 
 SET NAMES utf8mb4;
@@ -24,7 +24,8 @@ DROP TABLE IF EXISTS `clock_log`;
 CREATE TABLE `clock_log`  (
   `id` bigint NOT NULL AUTO_INCREMENT,
   `userid` bigint NOT NULL COMMENT '用户id',
-  `status` tinyint NOT NULL DEFAULT 0 COMMENT '状态,0上班打卡',
+  `start_time` time NULL DEFAULT NULL COMMENT '上班时间',
+  `end_time` time NULL DEFAULT NULL COMMENT '下班时间',
   `day_time` date NOT NULL COMMENT '创建时间,记录哪一天打的卡',
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '打卡记录表' ROW_FORMAT = DYNAMIC;
@@ -57,6 +58,24 @@ INSERT INTO `d_building` VALUES (5, 't3', 0, 28.227061, 112.926791, 514);
 INSERT INTO `d_building` VALUES (6, 'new1', 2, 28.227085, 112.926118, 618);
 INSERT INTO `d_building` VALUES (10, '在建', 2, 28.227005, 112.926019, 720);
 INSERT INTO `d_building` VALUES (11, '女2', 1, 28.228708, 112.924546, 514);
+
+-- ----------------------------
+-- Table structure for day_work
+-- ----------------------------
+DROP TABLE IF EXISTS `day_work`;
+CREATE TABLE `day_work`  (
+  `id` bigint NOT NULL AUTO_INCREMENT,
+  `user_id` bigint NOT NULL COMMENT '用户id',
+  `work_time` int NULL DEFAULT NULL COMMENT '工作时间(分钟)',
+  `over_time` int NULL DEFAULT NULL COMMENT '加班时间',
+  `detail` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '描述',
+  `day_time` date NOT NULL COMMENT '哪一天',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '每日工时记录' ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of day_work
+-- ----------------------------
 
 -- ----------------------------
 -- Table structure for pay_log
@@ -142,7 +161,7 @@ CREATE TABLE `sys_dict_type`  (
   `create_time` datetime NULL DEFAULT NULL COMMENT '创建时间',
   `update_time` datetime NULL DEFAULT NULL COMMENT '更新时间',
   PRIMARY KEY (`id`) USING BTREE,
-  UNIQUE INDEX `type_code`(`code`) USING BTREE
+  UNIQUE INDEX `type_code`(`code` ASC) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 89 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '字典类型表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
@@ -252,7 +271,7 @@ CREATE TABLE `sys_role`  (
   `create_time` datetime NULL DEFAULT NULL COMMENT '更新时间',
   `update_time` datetime NULL DEFAULT NULL COMMENT '创建时间',
   PRIMARY KEY (`id`) USING BTREE,
-  UNIQUE INDEX `name`(`name`) USING BTREE
+  UNIQUE INDEX `name`(`name` ASC) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 13 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '角色表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
@@ -387,7 +406,7 @@ CREATE TABLE `sys_user`  (
   `create_time` datetime NULL DEFAULT NULL COMMENT '创建时间',
   `update_time` datetime NULL DEFAULT NULL COMMENT '更新时间',
   PRIMARY KEY (`id`) USING BTREE,
-  UNIQUE INDEX `login_name`(`username`) USING BTREE
+  UNIQUE INDEX `login_name`(`username` ASC) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 288 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '用户信息表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
