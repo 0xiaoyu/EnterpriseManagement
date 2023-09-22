@@ -1,6 +1,7 @@
 package com.yu.security.jwt;
 
 import cn.hutool.core.convert.Convert;
+import cn.hutool.core.util.IdUtil;
 import com.yu.common.constant.SecurityConstants;
 import com.yu.security.model.SysUserDetails;
 import io.jsonwebtoken.Claims;
@@ -65,6 +66,7 @@ public class JwtTokenProvider {
         claims.put("username", claims.getSubject());
         claims.put("deptId", userDetails.getDeptId());
         claims.put("dataScope", userDetails.getDataScope());
+        claims.put("jti", IdUtil.fastSimpleUUID());
 
         Set<String> roles = userDetails.getAuthorities().stream()
                 .map(GrantedAuthority::getAuthority).collect(Collectors.toSet());

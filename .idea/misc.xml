@@ -3,6 +3,11 @@
   <component name="CodeInsightWorkspaceSettings">
     <option name="optimizeImportsOnTheFly" value="true" />
   </component>
+  <component name="EntryPointsManager">
+    <writeAnnotations>
+      <writeAnnotation name="com.baomidou.mybatisplus.annotation.EnumValue" />
+    </writeAnnotations>
+  </component>
   <component name="ExternalStorageConfigurationManager" enabled="true" />
   <component name="JsBuildToolPackageJson" sorting="DEFINITION_ORDER" />
   <component name="MavenProjectsManager">
