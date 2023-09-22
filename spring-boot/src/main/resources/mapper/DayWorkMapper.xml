@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yu.mapper.DayWorkMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.yu.model.entity.DayWork">
+        <id column="id" property="id" />
+        <result column="user_id" property="userId" />
+        <result column="work_time" property="workTime" />
+        <result column="over_time" property="overTime" />
+        <result column="day_time" property="dayTime" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, user_id, work_time, over_time, day_time
+    </sql>
+
+</mapper>

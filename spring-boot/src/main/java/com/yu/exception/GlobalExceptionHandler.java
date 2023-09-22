@@ -185,6 +185,7 @@ public class GlobalExceptionHandler {
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public <T> Result<T> handleException(Exception e) {
         log.error("unknown exception: {}", e.getMessage());
+        e.printStackTrace();
         return Result.failed(e.getLocalizedMessage());
     }
 
