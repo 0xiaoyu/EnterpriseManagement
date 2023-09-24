@@ -11,11 +11,31 @@
  Target Server Version : 80027 (8.0.27)
  File Encoding         : 65001
 
- Date: 22/09/2023 20:38:43
+ Date: 25/09/2023 07:26:34
 */
 
 SET NAMES utf8mb4;
 SET FOREIGN_KEY_CHECKS = 0;
+
+-- ----------------------------
+-- Table structure for apply
+-- ----------------------------
+DROP TABLE IF EXISTS `apply`;
+CREATE TABLE `apply`  (
+  `id` bigint NOT NULL AUTO_INCREMENT,
+  `user_id` bigint NOT NULL COMMENT '申请人',
+  `start_time` datetime NULL DEFAULT NULL COMMENT '开始时间',
+  `end_time` datetime NULL DEFAULT NULL COMMENT '结束时间',
+  `detail` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '描述',
+  `type` tinyint NULL DEFAULT NULL COMMENT '申请类型',
+  `approved_user_id` bigint NOT NULL COMMENT '审批人',
+  `deleted` tinyint(1) NULL DEFAULT NULL COMMENT '逻辑删除',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '申请表' ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of apply
+-- ----------------------------
 
 -- ----------------------------
 -- Table structure for clock_log
@@ -28,11 +48,14 @@ CREATE TABLE `clock_log`  (
   `end_time` time NULL DEFAULT NULL COMMENT '下班时间',
   `day_time` date NOT NULL COMMENT '创建时间,记录哪一天打的卡',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '打卡记录表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 4 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '打卡记录表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of clock_log
 -- ----------------------------
+INSERT INTO `clock_log` VALUES (1, 1, '09:14:01', '21:14:03', '2023-09-23');
+INSERT INTO `clock_log` VALUES (2, 1, '08:14:28', '16:14:33', '2023-09-22');
+INSERT INTO `clock_log` VALUES (3, 2, '09:14:28', '16:14:33', '2023-09-22');
 
 -- ----------------------------
 -- Table structure for d_building
@@ -71,11 +94,25 @@ CREATE TABLE `day_work`  (
   `detail` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '描述',
   `day_time` date NOT NULL COMMENT '哪一天',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '每日工时记录' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '每日工时记录' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of day_work
 -- ----------------------------
+
+-- ----------------------------
+-- Table structure for notice_read
+-- ----------------------------
+DROP TABLE IF EXISTS `notice_read`;
+CREATE TABLE `notice_read`  (
+  `id` bigint NULL DEFAULT NULL,
+  `update_time` datetime NULL DEFAULT NULL
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of notice_read
+-- ----------------------------
+INSERT INTO `notice_read` VALUES (1, '2023-09-02 16:51:06');
 
 -- ----------------------------
 -- Table structure for pay_log
@@ -96,6 +133,41 @@ CREATE TABLE `pay_log`  (
 -- Records of pay_log
 -- ----------------------------
 INSERT INTO `pay_log` VALUES (1, 1, 50, 1, '2023-09-06 19:08:33', '2023-09-06 19:08:33', 1, 1);
+
+-- ----------------------------
+-- Table structure for receive_notice_msg
+-- ----------------------------
+DROP TABLE IF EXISTS `receive_notice_msg`;
+CREATE TABLE `receive_notice_msg`  (
+  `id` bigint NOT NULL AUTO_INCREMENT,
+  `notice_id` bigint NULL DEFAULT NULL,
+  `receive_id` bigint NULL DEFAULT NULL,
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of receive_notice_msg
+-- ----------------------------
+INSERT INTO `receive_notice_msg` VALUES (1, 1, 1);
+
+-- ----------------------------
+-- Table structure for sender_notice_msg
+-- ----------------------------
+DROP TABLE IF EXISTS `sender_notice_msg`;
+CREATE TABLE `sender_notice_msg`  (
+  `id` bigint NOT NULL AUTO_INCREMENT,
+  `sender_id` bigint NULL DEFAULT NULL,
+  `msg` varchar(1000) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
+  `type` tinyint NULL DEFAULT NULL,
+  `update_time` datetime NULL DEFAULT NULL,
+  `create_time` datetime NULL DEFAULT NULL,
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of sender_notice_msg
+-- ----------------------------
+INSERT INTO `sender_notice_msg` VALUES (1, 2, 'test', 0, '2023-09-24 18:49:28', '2023-09-24 18:49:29');
 
 -- ----------------------------
 -- Table structure for sys_dept
@@ -918,20 +990,20 @@ CREATE TABLE `tb_user_dormitory`  (
 INSERT INTO `tb_user_dormitory` VALUES (1, 1);
 
 -- ----------------------------
--- Table structure for work_log
+-- Table structure for work_exc_log
 -- ----------------------------
-DROP TABLE IF EXISTS `work_log`;
-CREATE TABLE `work_log`  (
+DROP TABLE IF EXISTS `work_exc_log`;
+CREATE TABLE `work_exc_log`  (
   `id` bigint NOT NULL AUTO_INCREMENT,
   `userid` bigint NOT NULL COMMENT '用户id',
-  `time` int NOT NULL DEFAULT 0 COMMENT '工作时间（分钟时间）',
+  `time` int NOT NULL DEFAULT 0 COMMENT '时间',
   `day_time` date NOT NULL COMMENT '当天',
-  `type` tinyint NOT NULL DEFAULT 0 COMMENT '类型,0正常',
+  `type` tinyint NOT NULL DEFAULT 0 COMMENT '异常类型',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '工作时间记录' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '工作异常记录' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
--- Records of work_log
+-- Records of work_exc_log
 -- ----------------------------
 
 SET FOREIGN_KEY_CHECKS = 1;

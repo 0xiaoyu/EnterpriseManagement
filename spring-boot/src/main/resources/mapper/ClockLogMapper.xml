@@ -14,5 +14,13 @@
     <sql id="Base_Column_List">
         id, userid, start_time, day_time
     </sql>
+    <select id="countLateDay" resultType="com.yu.model.dto.ClockCountDayDTO">
+        SELECT COUNT(*) AS count,
+        DATE_FORMAT(day_time, '%Y-%m-%d') AS day
+        FROM clock_log
+        WHERE start_time >= '${@com.yu.config.WorkTimeConfig@startTime}'
+        and day_time between #{start} and #{end}
+        GROUP BY day_time;
+    </select>
 
 </mapper>

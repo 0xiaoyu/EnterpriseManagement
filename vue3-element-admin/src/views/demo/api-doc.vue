@@ -2,7 +2,7 @@
 <template>
   <div class="app-container">
     <iframe
-      src="http://localhost:8080/doc.html"
+      src="http://localhost:8989/doc.html"
       width="100%"
       height="100%"
       frameborder="0"

@@ -6,6 +6,7 @@ import com.yu.common.base.BasePageQuery;
 import com.yu.common.enums.NoticeEnum;
 import com.yu.common.result.PageResult;
 import com.yu.common.result.Result;
+import com.yu.common.util.SecurityUtils;
 import com.yu.model.entity.ReceiveNoticeMsgEntity;
 import com.yu.model.entity.SenderNoticeMsgEntity;
 import com.yu.model.vo.NoticeVo;
@@ -45,13 +46,13 @@ public class NoticeController {
     private final SysUserService userService;
 
 
-    public record NoticeSend(Long sendId, String receiveId,
+    public record NoticeSend(String receiveId,
                              String dept, String content, NoticeEnum type
     ) {
     }
 
     /**
-     * 发送通知给学生
+     * 发送通知给人员
      * 1.记录发送内容和发送者
      * 2，记录接收者
      * 3. webSocket发送
@@ -60,7 +61,7 @@ public class NoticeController {
      * @return {@code true} 添加成功，{@code false} 添加失败
      */
     @PostMapping("/student")
-    @Operation(summary = "发送通知给学生")
+    @Operation(summary = "发送通知给人员")
     @Parameters(value = {
             @Parameter(name = "sendId", description = "发送者id，在tb_user表内的id", required = true),
             @Parameter(name = "receiveId", description = "接收者id，多个用逗号隔开"),
@@ -71,21 +72,18 @@ public class NoticeController {
     @PreAuthorize("@security.hasPerm('notice:send:student')")
     public Result<Boolean> sendToStudent(@RequestBody NoticeSend notice) {
         SenderNoticeMsgEntity msg = SenderNoticeMsgEntity.builder()
-                .senderId(notice.sendId).msg(notice.content).build();
-        if (StrUtil.isBlank(notice.receiveId) && StrUtil.isBlank(notice.dept)) {
-            return Result.failed("接收者不能为空");
-        }
+                .senderId(SecurityUtils.getUserId()).msg(notice.content).build();
         // 1.记录发送内容和发送者
         if (StrUtil.isNotBlank(notice.receiveId)) {
             msg.setType(NoticeEnum.PRIVATE_NOTICE);
             senderService.save(msg);
-            List<ReceiveNoticeMsgEntity> receive =  Arrays.stream(notice.receiveId.split(",")).map(id -> {
-                messagingTemplate.convertAndSendToUser(String.valueOf(id), "/notice/student", notice.content);
+            List<ReceiveNoticeMsgEntity> receive = Arrays.stream(notice.receiveId.split(",")).map(id -> {
+                messagingTemplate.convertAndSendToUser(String.valueOf(id), "/notice/user", notice.content);
                 return ReceiveNoticeMsgEntity.builder()
                         .receiveId(Long.valueOf(id)).noticeId(msg.getId()).build();
             }).toList();
             receiveService.saveBatch(receive);
-        } else {
+        } else if (StrUtil.isNotBlank(notice.dept)) {
             if (notice.dept.equals("all")) {
                 messagingTemplate.convertAndSend("/notice/all", notice.content);
                 msg.setType(NoticeEnum.GROUP_NOTICE);
@@ -98,10 +96,12 @@ public class NoticeController {
                 List<ReceiveNoticeMsgEntity> list = Arrays.stream(notice.dept.split(",")).map(id -> {
                     messagingTemplate.convertAndSendToUser(id, "/notice/dept", notice.content);
                     return ReceiveNoticeMsgEntity.builder()
-                            .receiveId(Long.valueOf(id)).noticeId(msg.getId()).build();
+                            .receiveId(-Long.parseLong(id)).noticeId(msg.getId()).build();
                 }).toList();
                 receiveService.saveBatch(list);
             }
+        } else {
+            return Result.failed("接收者不能为空");
         }
         return Result.success(true);
     }
@@ -119,8 +119,8 @@ public class NoticeController {
             @Parameter(name = "id", description = "用户id", required = true)
     })
     public PageResult<NoticeVo> getByUserId(
-            @PathVariable Long id, BasePageQuery query) {
-        Page<NoticeVo> page = receiveService.getNoticeList(query.getPage(),id);
+            @PathVariable Long id, BasePageQuery query,NoticeEnum type) {
+        Page<NoticeVo> page = receiveService.getNoticeList(query.getPage(), id,type);
         return PageResult.success(page);
     }
 
@@ -129,8 +129,14 @@ public class NoticeController {
     @Parameters(value = {
             @Parameter(name = "id", description = "用户id", required = true)
     })
-    public Result<Long> getNoReadCount(@PathVariable Long id) {
-        return Result.success(receiveService.getNoReadCount(id));
+    public Result<Long> getNoReadCount(@PathVariable Long id,Long deptId) {
+        return Result.success(receiveService.getNoReadCount(id, deptId));
+    }
+
+    @GetMapping("count/noRead")
+    @Operation(summary = "根据该用户未读通知数量", security = {@SecurityRequirement(name = "Authorization")})
+    public Result<Long> getNoReadCount() {
+        return Result.success(receiveService.getNoReadCount());
     }
 
 }

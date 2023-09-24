@@ -1,7 +1,11 @@
 package com.yu.mapper;
 
+import com.yu.model.dto.ClockCountDayDTO;
 import com.yu.model.entity.ClockLog;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+
+import java.time.LocalDate;
+import java.util.List;
 
 /**
  * <p>
@@ -13,4 +17,5 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
  */
 public interface ClockLogMapper extends BaseMapper<ClockLog> {
 
+    List<ClockCountDayDTO> countLateDay(LocalDate start, LocalDate end);
 }

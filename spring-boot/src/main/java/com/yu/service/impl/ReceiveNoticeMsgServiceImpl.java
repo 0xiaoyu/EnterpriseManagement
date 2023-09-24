@@ -3,6 +3,8 @@ package com.yu.service.impl;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.yu.common.enums.NoticeEnum;
+import com.yu.common.util.SecurityUtils;
 import com.yu.mapper.ReceiveNoticeMsgMapper;
 import com.yu.model.entity.ReceiveNoticeMsgEntity;
 import com.yu.model.vo.NoticeVo;
@@ -19,12 +21,17 @@ import org.springframework.stereotype.Service;
 public class ReceiveNoticeMsgServiceImpl extends ServiceImpl<ReceiveNoticeMsgMapper, ReceiveNoticeMsgEntity> implements ReceiveNoticeMsgService {
 
     @Override
-    public Page<NoticeVo> getNoticeList(Page<NoticeVo> page, Long userId) {
-        return baseMapper.getNoticeList(page, userId);
+    public Page<NoticeVo> getNoticeList(Page<NoticeVo> page, Long userId, NoticeEnum type) {
+        return baseMapper.getNoticeList(page, userId,type);
     }
 
     @Override
-    public Long getNoReadCount(Long id) {
-        return baseMapper.getNoReadCount(id);
+    public Long getNoReadCount(Long id, Long deptId) {
+        return baseMapper.getNoReadCount(id,-Math.abs(deptId));
+    }
+
+    @Override
+    public Long getNoReadCount() {
+        return baseMapper.getNoReadCount(SecurityUtils.getUserId(),-SecurityUtils.getDeptId());
     }
 }

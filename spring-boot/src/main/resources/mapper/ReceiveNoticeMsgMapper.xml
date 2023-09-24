@@ -13,25 +13,29 @@
     </sql>
     <select id="getNoticeList" resultType="com.yu.model.vo.NoticeVo">
         select n.msg,
-               n.type,
-               if((n.update_time > (select * from sys_user where id = #{id})), 0, 1) as isRead,
-               u.name
-        from receive_notice_msg r,
-             sender_notice_msg n
-                 left join sys_user u on r.receive_id = u.id
-        where r.receive_id = #{id}
-           or n.type = 1
-            and r.notice_id = n.id
+        n.type,
+        if((n.update_time > (select n.update_time from notice_read where id = #{userId})), 0, 1) as isRead,
+        u.username
+        from receive_notice_msg r
+        join sender_notice_msg n on r.notice_id = r.id
+        left join sys_user u on r.receive_id = u.id
+        where (r.receive_id = ${userId}
+        or r.receive_id = ${deptId}
+        or n.type = 1)
+        <if test="type!=null">
+            and n.type = type
+        </if>
+        and r.notice_id = n.id
         order by n.update_time desc
     </select>
     <select id="getNoReadCount" resultType="java.lang.Long" parameterType="java.lang.Long">
         select count(1)
-        from sender_notice_msg n, receive_notice_msg r
-        where r.receive_id = #{id}
-          and r.notice_id = n.id
-          and n.update_time > (select * from sys_user where id = #{id})
-          or n.type = 1
-        order by n.update_time desc
+        from receive_notice_msg r
+                 join sender_notice_msg s on r.notice_id = s.id
+        where (r.receive_id = ${userId}
+           or r.receive_id = ${deptId})
+            and s.update_time >
+                (select n.update_time from notice_read n where id = ${userId})
     </select>
 
 </mapper>

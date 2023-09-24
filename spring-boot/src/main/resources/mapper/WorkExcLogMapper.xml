@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yu.mapper.WorkExcLogMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.yu.model.entity.WorkExcLog">
+        <id column="id" property="id" />
+        <result column="userid" property="userid" />
+        <result column="time" property="time" />
+        <result column="day_time" property="dayTime" />
+        <result column="type" property="type" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, userid, time, day_time, type
+    </sql>
+    <select id="getPageQuery" resultType="com.yu.model.entity.WorkExcLog">
+        select *
+        from work_exc_log
+        where
+        <if test="nickname != null and nickname != '' and deptId!=null ">
+            userid in (
+            select id
+            from sys_user
+            where
+            <if test="nickname != null and nickname != ''">
+                nickname like #{nickname}
+                <if test="deptId!=null">
+                    or
+                </if>
+            </if>
+            <if test="deptId!=null">
+                dept_id = #{deptId}
+            </if>
+            ) and
+        </if>
+        ${ew.sqlSegment}
+    </select>
+
+</mapper>
