@@ -120,6 +120,10 @@ public class JwtTokenProvider {
         return Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token).getBody().getSubject();
     }
 
+    public Long getUserId(String token){
+        return Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token).getBody().get("userId", Long.class);
+    }
+
 
     public Claims getTokenClaims(String token) {
         Claims claims = Jwts.parserBuilder().setSigningKey(this.getSecretKeyBytes()).build().parseClaimsJws(token).getBody();

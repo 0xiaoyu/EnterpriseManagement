@@ -62,4 +62,6 @@ public interface SysDeptService extends IService<SysDept> {
      * @return
      */
     DeptForm getDeptForm(Long deptId);
+
+    SysDept getDeptByUserId(Long id);
 }

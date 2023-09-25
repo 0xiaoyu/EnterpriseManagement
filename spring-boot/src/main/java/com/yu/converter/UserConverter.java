@@ -37,7 +37,8 @@ public interface UserConverter {
     SysUser form2Entity(UserForm entity);
 
     @Mappings({
-            @Mapping(target = "userId", source = "id")
+            @Mapping(target = "userId", source = "id"),
+            @Mapping(target = "deptId", source = "deptId"),
     })
     UserInfoVO toUserInfoVo(SysUser entity);
 

@@ -39,4 +39,16 @@ export interface WorkExcLog {
    * 类型
    */
   type?: String;
+  /**
+   * 人员名称
+   */
+  name?: String;
+  /**
+   * 手机号
+   */
+  mobile?: String;
+  /**
+   * 部门名称
+   */
+  deptName?: String;
 }

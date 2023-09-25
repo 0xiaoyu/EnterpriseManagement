@@ -1,8 +1,10 @@
 package com.yu.controller;
 
 
+import com.yu.common.enums.WorkExcEnum;
 import com.yu.common.result.PageResult;
 import com.yu.common.result.Result;
+import com.yu.model.dto.WorkExcLogDTO;
 import com.yu.model.entity.WorkExcLog;
 import com.yu.model.query.WorkExcPageQuery;
 import com.yu.service.IWorkExcLogService;
@@ -29,7 +31,7 @@ public class WorkExcLogController {
 
     @GetMapping
     @Operation(summary = "分页查询异常类型")
-    public PageResult<WorkExcLog> page(WorkExcPageQuery query){
+    public PageResult<WorkExcLogDTO> page(WorkExcPageQuery query){
         return PageResult.success(service.getPageQuery(query));
     }
 
@@ -49,6 +51,12 @@ public class WorkExcLogController {
     @Operation(summary = "修改异常类型")
     public Result<Boolean> update(@RequestBody WorkExcLog workExcLog){
         return Result.judge(service.updateById(workExcLog));
+    }
+
+    @GetMapping("/typeEnum")
+    @Operation(summary = "获取异常类型枚举")
+    public Result<WorkExcEnum[]> getTypeEnum(){
+        return Result.success(WorkExcEnum.values());
     }
 
 }

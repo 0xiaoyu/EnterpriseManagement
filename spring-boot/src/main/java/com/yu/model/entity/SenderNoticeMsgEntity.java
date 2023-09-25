@@ -42,14 +42,21 @@ public class SenderNoticeMsgEntity extends BaseEntity {
      * 通知内容
      */
     @Schema(description = "通知内容")
-    @TableField(value = "n_msg")
+    @TableField(value = "msg")
     private String msg;
+
+    /**
+     * 标题内容
+     */
+    @Schema(description = "标题内容")
+    @TableField(value = "title")
+    private String title;
 
     /**
      * 通知类型
      */
     @Schema(description = "通知类型")
-    @TableField(value = "n_type")
+    @TableField(value = "type")
     private NoticeEnum type;
 
 

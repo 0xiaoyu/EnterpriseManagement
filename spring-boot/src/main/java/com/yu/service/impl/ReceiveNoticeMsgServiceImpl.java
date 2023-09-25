@@ -21,8 +21,10 @@ import org.springframework.stereotype.Service;
 public class ReceiveNoticeMsgServiceImpl extends ServiceImpl<ReceiveNoticeMsgMapper, ReceiveNoticeMsgEntity> implements ReceiveNoticeMsgService {
 
     @Override
-    public Page<NoticeVo> getNoticeList(Page<NoticeVo> page, Long userId, NoticeEnum type) {
-        return baseMapper.getNoticeList(page, userId,type);
+    public Page<NoticeVo> getNoticeList(Page<NoticeVo> page, NoticeEnum type) {
+        Long userId = SecurityUtils.getUserId();
+        Long deptId = SecurityUtils.getDeptId();
+        return baseMapper.getNoticeList(page, userId,-deptId,type);
     }
 
     @Override

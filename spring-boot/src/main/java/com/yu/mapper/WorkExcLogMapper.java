@@ -1,10 +1,11 @@
 package com.yu.mapper;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.yu.model.dto.WorkExcLogDTO;
 import com.yu.model.entity.WorkExcLog;
-import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Param;
 
 /**
@@ -17,5 +18,5 @@ import org.apache.ibatis.annotations.Param;
  */
 public interface WorkExcLogMapper extends BaseMapper<WorkExcLog> {
 
-    IPage<WorkExcLog> getPageQuery(Page<Object> page, @Param("ew") QueryWrapper<Object> qw,String name ,Long dept);
+    IPage<WorkExcLogDTO> getPageQuery(Page<Object> page, @Param("ew") QueryWrapper<Object> qw, String name , Long deptId);
 }

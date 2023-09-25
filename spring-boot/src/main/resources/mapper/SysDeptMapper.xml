@@ -21,4 +21,7 @@
         tree_path,sort,status,
         deleted,create_time,update_time
     </sql>
+    <select id="getDeptByUserId" resultType="com.yu.model.entity.SysDept" parameterType="java.lang.Long">
+        select * from sys_dept where id = (select dept_id from sys_user where id = #{userId})
+    </select>
 </mapper>

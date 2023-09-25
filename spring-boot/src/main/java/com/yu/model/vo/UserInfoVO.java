@@ -27,6 +27,9 @@ public class UserInfoVO {
     @Schema(description="头像地址")
     private String avatar;
 
+    @Schema(description = "部门id")
+    private Long deptId;
+
     @Schema(description="用户角色编码集合")
     private Set<String> roles;
 

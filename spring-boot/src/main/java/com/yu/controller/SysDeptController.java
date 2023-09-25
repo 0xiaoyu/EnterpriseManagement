@@ -3,6 +3,7 @@ package com.yu.controller;
 import com.yu.common.annotation.PreventDuplicateSubmit;
 import com.yu.common.model.Option;
 import com.yu.common.result.Result;
+import com.yu.model.entity.SysDept;
 import com.yu.model.form.DeptForm;
 import com.yu.model.query.DeptQuery;
 import com.yu.model.vo.DeptVO;
@@ -31,6 +32,14 @@ import java.util.List;
 @RequiredArgsConstructor
 public class SysDeptController {
     private final SysDeptService deptService;
+
+    @GetMapping("/user/{id}")
+    public Result<SysDept> getDept(
+            @Parameter(description ="员工ID") @PathVariable Long id
+    ) {
+        SysDept dept = deptService.getDeptByUserId(id);
+        return Result.success(dept);
+    }
     @Operation(summary = "获取部门列表", security = {@SecurityRequirement(name = "Authorization")})
     @GetMapping
     public Result<List<DeptVO>> listDepartments(

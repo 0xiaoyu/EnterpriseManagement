@@ -244,7 +244,8 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
                         SysUser::getId,
                         SysUser::getUsername,
                         SysUser::getNickname,
-                        SysUser::getAvatar
+                        SysUser::getAvatar,
+                        SysUser::getDeptId
                 )
         );
         // entity->VO

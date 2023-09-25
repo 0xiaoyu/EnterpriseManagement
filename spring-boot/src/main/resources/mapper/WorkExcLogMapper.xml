@@ -15,17 +15,19 @@
     <sql id="Base_Column_List">
         id, userid, time, day_time, type
     </sql>
-    <select id="getPageQuery" resultType="com.yu.model.entity.WorkExcLog">
-        select *
-        from work_exc_log
+    <select id="getPageQuery" resultType="com.yu.model.dto.WorkExcLogDTO">
+        select w.*,u.nickname as name,sd.name as deptName,u.mobile
+        from work_exc_log w
+        left join sys_user u on w.userid = u.id
+        left join enterprise.sys_dept sd on u.dept_id = sd.id
         where
-        <if test="nickname != null and nickname != '' and deptId!=null ">
+        <if test="name != null and name != '' and deptId!=null ">
             userid in (
             select id
             from sys_user
             where
-            <if test="nickname != null and nickname != ''">
-                nickname like #{nickname}
+            <if test="name != null and name != ''">
+                nickname like #{name}
                 <if test="deptId!=null">
                     or
                 </if>

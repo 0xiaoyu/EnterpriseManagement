@@ -12,10 +12,13 @@
         `id`, `notice_id`, `receive_id`, `r_status`
     </sql>
     <select id="getNoticeList" resultType="com.yu.model.vo.NoticeVo">
-        select n.msg,
+        select
+        n.msg,
+        n.id,
+        n.title,
         n.type,
         if((n.update_time > (select n.update_time from notice_read where id = #{userId})), 0, 1) as isRead,
-        u.username
+        u.username as name
         from receive_notice_msg r
         join sender_notice_msg n on r.notice_id = r.id
         left join sys_user u on r.receive_id = u.id

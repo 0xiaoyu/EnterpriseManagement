@@ -208,6 +208,11 @@ public class SysDeptServiceImpl extends ServiceImpl<SysDeptMapper, SysDept> impl
         return deptConverter.entity2Form(entity);
     }
 
+    @Override
+    public SysDept getDeptByUserId(Long id) {
+        return baseMapper.getDeptByUserId(id);
+    }
+
 
     /**
      * 部门路径生成

@@ -15,7 +15,7 @@ import com.yu.model.vo.NoticeVo;
  */
 public interface ReceiveNoticeMsgService extends IService<ReceiveNoticeMsgEntity> {
 
-    Page<NoticeVo> getNoticeList(Page<NoticeVo> page, Long userId, NoticeEnum type);
+    Page<NoticeVo> getNoticeList(Page<NoticeVo> page, NoticeEnum type);
 
     Long getNoReadCount(Long id,Long deptId);
 

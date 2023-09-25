@@ -7,13 +7,11 @@ import com.yu.common.enums.NoticeEnum;
 import com.yu.common.result.PageResult;
 import com.yu.common.result.Result;
 import com.yu.common.util.SecurityUtils;
+import com.yu.model.entity.NoticeRead;
 import com.yu.model.entity.ReceiveNoticeMsgEntity;
 import com.yu.model.entity.SenderNoticeMsgEntity;
 import com.yu.model.vo.NoticeVo;
-import com.yu.service.DormitoryService;
-import com.yu.service.ReceiveNoticeMsgService;
-import com.yu.service.SenderNoticeMsgService;
-import com.yu.service.SysUserService;
+import com.yu.service.*;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.Parameters;
@@ -24,6 +22,7 @@ import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
 
@@ -42,12 +41,10 @@ public class NoticeController {
     private final SenderNoticeMsgService senderService;
     private final SimpMessagingTemplate messagingTemplate;
     private final ReceiveNoticeMsgService receiveService;
-    private final DormitoryService dormitoryService;
-    private final SysUserService userService;
+    private final INoticeReadService noticeReadService;
 
 
-    public record NoticeSend(String receiveId,
-                             String dept, String content, NoticeEnum type
+    public record NoticeSend(String receiveId,String dept, String content, NoticeEnum type,String title
     ) {
     }
 
@@ -94,7 +91,7 @@ public class NoticeController {
                 msg.setType(NoticeEnum.DORMITORY_NOTICE);
                 senderService.save(msg);
                 List<ReceiveNoticeMsgEntity> list = Arrays.stream(notice.dept.split(",")).map(id -> {
-                    messagingTemplate.convertAndSendToUser(id, "/notice/dept", notice.content);
+                    messagingTemplate.convertAndSend("/notice/dept"+id, notice.content);
                     return ReceiveNoticeMsgEntity.builder()
                             .receiveId(-Long.parseLong(id)).noticeId(msg.getId()).build();
                 }).toList();
@@ -113,15 +110,23 @@ public class NoticeController {
     }
 
 
-    @GetMapping("/list/{id}")
+    @GetMapping("/list")
     @Operation(summary = "根据用户id获取接收通知", security = {@SecurityRequirement(name = "Authorization")})
-    @Parameters(value = {
-            @Parameter(name = "id", description = "用户id", required = true)
-    })
-    public PageResult<NoticeVo> getByUserId(
-            @PathVariable Long id, BasePageQuery query,NoticeEnum type) {
-        Page<NoticeVo> page = receiveService.getNoticeList(query.getPage(), id,type);
+    public PageResult<NoticeVo> getByUserId(BasePageQuery query,NoticeEnum type) {
+        Page<NoticeVo> page = receiveService.getNoticeList(query.getPage(),type);
         return PageResult.success(page);
+    }
+
+    /**
+     * 已读所有
+     * @return
+     */
+    @GetMapping("/readAll")
+    @Operation(summary = "已读所有", security = {@SecurityRequirement(name = "Authorization")})
+    public Result<Boolean> readAll(){
+        Long userId = SecurityUtils.getUserId();
+        boolean b = noticeReadService.lambdaUpdate().eq(NoticeRead::getId, userId).set(NoticeRead::getUpdateTime, LocalDateTime.now()).update();
+        return Result.judge(b);
     }
 
     @GetMapping("count/noRead/{id}")

@@ -1,8 +1,9 @@
 package com.yu.service;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.yu.model.entity.WorkExcLog;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.yu.model.dto.WorkExcLogDTO;
+import com.yu.model.entity.WorkExcLog;
 import com.yu.model.query.WorkExcPageQuery;
 
 /**
@@ -15,5 +16,5 @@ import com.yu.model.query.WorkExcPageQuery;
  */
 public interface IWorkExcLogService extends IService<WorkExcLog> {
 
-    IPage<WorkExcLog> getPageQuery(WorkExcPageQuery query);
+    IPage<WorkExcLogDTO> getPageQuery(WorkExcPageQuery query);
 }

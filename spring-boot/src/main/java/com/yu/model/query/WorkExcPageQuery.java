@@ -1,12 +1,11 @@
 package com.yu.model.query;
 
 import com.yu.common.base.BasePageQuery;
-import com.yu.common.enums.WorkExcEnum;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @EqualsAndHashCode(callSuper = true)
 @Data
@@ -16,9 +15,9 @@ public class WorkExcPageQuery extends BasePageQuery {
     @Schema(description = "部门")
     private Long dept;
     @Schema(description = "开始时间")
-    private LocalDate startTime;
+    private LocalDateTime startTime;
     @Schema(description = "结束时间")
-    private LocalDate endTime;
+    private LocalDateTime endTime;
     @Schema(description = "异常类型")
-    private WorkExcEnum type;
+    private String type;
 }

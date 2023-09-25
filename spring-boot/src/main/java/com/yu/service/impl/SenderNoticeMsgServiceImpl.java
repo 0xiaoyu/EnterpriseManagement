@@ -37,7 +37,7 @@ public class SenderNoticeMsgServiceImpl extends ServiceImpl<SenderNoticeMsgMappe
             Db.save(receive);
             SysUser one = Db.lambdaQuery(SysUser.class).select(SysUser::getUsername).eq(SysUser::getId, id).one();
             // 发送消息
-            messagingTemplate.convertAndSendToUser(id.toString(), "/notice/user", new NoticeVo(one.getUsername(), msg, false, NoticeEnum.SYSTEM_NOTICE));
+            messagingTemplate.convertAndSendToUser(id.toString(), "/notice/user", new NoticeVo(null,one.getUsername(), msg,"系统通知", false, NoticeEnum.SYSTEM_NOTICE));
             return true;
         } catch (Exception e) {
             log.error("发送系统通知失败 {}", e.getMessage());

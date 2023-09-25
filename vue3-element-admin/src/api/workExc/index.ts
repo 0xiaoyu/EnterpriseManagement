@@ -5,13 +5,13 @@ const baseUrl = "/work-exc"
 
 /**
  * 分页查询
- * @param data
+ * @param params
  */
-export function pageWorkExc(data: PageWorkExcParam) {
+export function pageWorkExc(params: PageWorkExcParam) {
   return request({
     url: `${baseUrl}`,
-    method: 'post',
-    data
+    method: 'get',
+    params
   })
 }
 
@@ -39,5 +39,20 @@ export function updateWorkExc(data: WorkExcLog) {
     url: `${baseUrl}`,
     method: 'patch',
     data
+  })
+}
+
+export function exportWorkExc(data:PageWorkExcParam){
+  return request({
+    url: `${baseUrl}/_export`,
+    method: 'post',
+    data
+  })
+}
+
+export function getAllWorkExcType(){
+  return request({
+    url: `${baseUrl}/typeEnum`,
+    method: 'get'
   })
 }

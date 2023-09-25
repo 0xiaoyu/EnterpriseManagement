@@ -44,7 +44,7 @@ public class AuthChannelInterceptor implements ChannelInterceptor {
             if (StrUtil.isNotBlank(bearerToken)) {
 
                 bearerToken = bearerToken.substring(7);
-                String username = jwtTokenProvider.getUsername(bearerToken);
+                String username = String.valueOf(jwtTokenProvider.getUserId(bearerToken));
                 // if the username is not null, assign it to the Principal.
                 if (StrUtil.isNotBlank(username)) {
                     Principal principal = () -> username;

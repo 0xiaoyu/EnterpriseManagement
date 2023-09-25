@@ -3,6 +3,7 @@ package com.yu.model.entity;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.yu.common.enums.ApplyTypeEnum;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -43,8 +44,11 @@ public class Apply implements Serializable {
     @Schema(description = "描述")
     private String detail;
 
+    @Schema(description = "审批状态")
+    private Integer status;
+
     @Schema(description = "申请类型")
-    private Integer type;
+    private ApplyTypeEnum type;
 
     @Schema(description = "审批人")
     private Long approvedUserId;

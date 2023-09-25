@@ -17,7 +17,7 @@ import org.apache.ibatis.annotations.Mapper;
 public interface ReceiveNoticeMsgMapper extends BaseMapper<ReceiveNoticeMsgEntity> {
 
 
-    Page<NoticeVo> getNoticeList(Page<NoticeVo> page, Long id, NoticeEnum type);
+    Page<NoticeVo> getNoticeList(Page<NoticeVo> page, Long userId,Long deptId, NoticeEnum type);
 
 //    Long getNoReadCount(Long id);
 

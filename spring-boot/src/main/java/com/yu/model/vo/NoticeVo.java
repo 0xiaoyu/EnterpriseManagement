@@ -13,12 +13,17 @@ import lombok.NoArgsConstructor;
 @Builder
 @Schema(name = "通知消息")
 public class NoticeVo {
+    @Schema(description = "通知id")
+    private Long id;
 
-    @Schema(description = "通知名字")
+    @Schema(description = "通知人名字")
     private String name;
 
     @Schema(description = "通知内容")
     private String msg;
+
+    @Schema(description = "标题")
+    private String title;
 
     @Schema(description = "是否已读")
     private Boolean isRead;
