@@ -5,12 +5,15 @@ import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.extension.toolkit.Db;
 import com.yu.common.constant.SecurityConstants;
 import com.yu.common.enums.WorkExcEnum;
+import com.yu.common.result.PageResult;
 import com.yu.common.result.Result;
 import com.yu.common.util.SecurityUtils;
 import com.yu.config.WorkTimeConfig;
 import com.yu.model.dto.ClockCountDayDTO;
 import com.yu.model.entity.ClockLog;
 import com.yu.model.entity.WorkExcLog;
+import com.yu.model.query.PassLogPageQuery;
+import com.yu.model.vo.PassPageVo;
 import com.yu.security.jwt.JwtTokenProvider;
 import com.yu.service.IClockLogService;
 import com.yu.service.IDayWorkService;
@@ -20,6 +23,7 @@ import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
+import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.security.core.Authentication;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -64,6 +68,17 @@ public class AccessController {
         return Result.success();
     }
 
+    /**
+     * 分页查询进入记录
+     *
+     * @param query 分页查询对象
+     * @return 分页查询对象
+     */
+    @GetMapping("pageQuery")
+    @Operation(summary = "分页查询进入记录")
+    public PageResult<PassPageVo> pageQuery(@ParameterObject PassLogPageQuery query){
+        return PageResult.success(clockLogService.getPageQuery(query));
+    }
     @PostMapping("authentication")
     @Operation(summary = "二维码验证")
     public Result<String> authentication(@Parameter(description = "通行token") @RequestBody String token) {

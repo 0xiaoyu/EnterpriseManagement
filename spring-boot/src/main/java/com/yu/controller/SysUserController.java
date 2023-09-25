@@ -5,8 +5,10 @@ import com.alibaba.excel.ExcelWriter;
 import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.yu.common.constant.ExcelConstants;
+import com.yu.common.enums.EmailType;
 import com.yu.common.result.PageResult;
 import com.yu.common.result.Result;
+import com.yu.common.util.EmailUtils;
 import com.yu.common.util.ExcelUtils;
 import com.yu.common.annotation.PreventDuplicateSubmit;
 import com.yu.listener.easyexcel.UserImportListener;
@@ -25,6 +27,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -38,6 +41,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URLEncoder;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * 用户控制器
@@ -52,6 +56,44 @@ import java.util.List;
 public class SysUserController {
 
     private final SysUserService userService;
+    private final PasswordEncoder passwordEncoder;
+    private final EmailUtils emailUtils;
+
+
+    @PatchMapping("resetPassword")
+    @Operation(description = "重置密码")
+    public Result<String> resetPassword(@Parameter(description = "email", example = "1647@qq.com")@RequestParam String email,
+                                        @Parameter(description = "邮箱验证码", example = "123asd")@RequestParam String verifyCode,
+                                        @Parameter(description = "新密码", example = "123456")@RequestParam String password,
+                                        @Parameter(description = "用户名", example = "zhou")@RequestParam String username
+    ) {
+        Result<String> s = switch (emailUtils.verify(email, verifyCode, EmailType.RESET_PASSWORD)) {
+            case FAIL -> Result.failed("邮箱验证码错误");
+            case OVERDUE -> Result.failed("邮箱验证码已过期");
+            default -> null;
+        };
+        if (s != null)
+            return s;
+
+        SysUser user = userService.lambdaQuery().eq(SysUser::getUsername,username).eq(SysUser::getEmail, email).one();
+        if (Objects.isNull(user)) return Result.failed("用户不存在");
+        String encode = passwordEncoder.encode(password);
+        user.setPassword(encode);
+        boolean b = userService.updateById(user);
+        return b ? Result.success() : Result.failed("重置密码失败");
+    }
+
+    @Operation(description = "获取邮箱验证码验证")
+    @GetMapping("getEmailVerifyCode")
+    public Result<String> getEmailVerifyCode(@Parameter(description = "注册的邮箱", example = "164702@qq.com") String email,
+                                             @Parameter(description = "发送邮箱的类型", example = "REGISTER") @RequestParam("type") EmailType type) {
+        try {
+            emailUtils.sendMailCode(email, type);
+            return Result.success();
+        } catch (Exception e) {
+            return Result.failed("发送验证码失败");
+        }
+    }
 
     @Operation(summary = "用户分页列表", security = {@SecurityRequirement(name = "Authorization")})
     @GetMapping("/page")

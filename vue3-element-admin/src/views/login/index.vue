@@ -157,7 +157,7 @@
           <el-input
             v-model="resetForm.password"
             v-shake
-            :type="passwordVisible === false ? 'password' : 'input'"
+            :type="!passwordVisible ? 'password' : 'input'"
             class="flex-1"
             name="password"
             placeholder="新密码"
@@ -368,7 +368,6 @@ function handleLogin() {
           const query: LocationQuery = route.query;
 
           const redirect = (query.redirect as LocationQueryValue) ?? "/";
-
           const otherQueryParams = Object.keys(query).reduce(
             (acc: any, cur: string) => {
               if (cur !== "redirect") {

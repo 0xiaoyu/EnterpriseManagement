@@ -2,4 +2,4 @@ spring:
   application:
     name: enterprise
   profiles:
-    active: dev
+    active: prod

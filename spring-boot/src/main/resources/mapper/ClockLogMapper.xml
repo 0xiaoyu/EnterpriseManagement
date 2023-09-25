@@ -22,5 +22,15 @@
         and day_time between #{start} and #{end}
         GROUP BY day_time;
     </select>
+    <select id="getPageQuery" resultType="com.yu.model.vo.PassPageVo">
+        select log.id,log.a_type,log.create_time,u.username as name,u.mobile as phone
+        from access_log log
+        left join sys_user u on log.user_id = u.id
+        where (a_type = 2 or a_type = 3) and log.deleted = 0
+        <if test="q.startTime != null">
+            and log.create_time between #{q.startTime} and #{q.endTime}
+        </if>
+        order by create_time desc
+    </select>
 
 </mapper>
