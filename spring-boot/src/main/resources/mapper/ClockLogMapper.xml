@@ -23,14 +23,13 @@
         GROUP BY day_time;
     </select>
     <select id="getPageQuery" resultType="com.yu.model.vo.PassPageVo">
-        select log.id,log.a_type,log.create_time,u.username as name,u.mobile as phone
-        from access_log log
-        left join sys_user u on log.user_id = u.id
-        where (a_type = 2 or a_type = 3) and log.deleted = 0
+        select log.id,log.day_time,log.start_time,log.end_time,u.username as name,u.mobile as phone
+        from clock_log log
+        left join sys_user u on log.userid = u.id
         <if test="q.startTime != null">
-            and log.create_time between #{q.startTime} and #{q.endTime}
+            where log.day_time between #{q.startTime} and #{q.endTime}
         </if>
-        order by create_time desc
+        order by day_time desc
     </select>
 
 </mapper>

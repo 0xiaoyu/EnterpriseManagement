@@ -36,12 +36,13 @@ export function getAccessTime() {
   });
 }
 
-export function modifyTime(time: String) {
+export function modifyTime(startTime: String,endTime: String) {
   return request({
     url: baseUrl + "/modifyTime",
     method: "put",
     params: {
-      time: time,
+      startTime,
+      endTime,
     },
   });
 }

@@ -12,13 +12,6 @@
             type="datetimerange"
           />
         </el-form-item>
-        <el-form-item label="查询类型">
-          <el-select v-model="queryParams.type" placeholder="请选择查询类型">
-            <el-option :key="0" :value="'0,1,2,3'" label="全部" />
-            <el-option :key="1" :value="'0,1'" label="学生进出" />
-            <el-option :key="2" :value="'2,3'" label="其他人员" />
-          </el-select>
-        </el-form-item>
         <el-form-item>
           <el-button type="primary" @click="handleQuery()">
             <i-ep-search />
@@ -37,14 +30,17 @@
             <template #reference>
               <el-button @click="timeVisible = true">
                 <i-ep-refresh />
-                设置门禁时间：{{ accessTime }}
+                设置上班时间：{{ accessTime }}
               </el-button>
             </template>
             <div>
               <el-time-picker
-                v-model="accessSetTime"
-                placeholder="门禁时间"
+                v-model="accessTime"
+                placeholder="上班时间"
+                is-range
                 style="width: 130px"
+                value-format="HH:mm:ss"
+                format="HH:mm:ss"
               />
             </div>
             <div style="text-align: right; margin: 0">
@@ -95,9 +91,9 @@
       >
         <el-table-column type="selection" width="55" align="center" />
         <el-table-column label="人员名字" prop="name" />
-        <el-table-column label="时间" prop="createTime" />
-        <el-table-column label="类型" prop="atype" />
-        <el-table-column label="宿舍" prop="dormitory" />
+        <el-table-column label="上班时间" prop="startTime" />
+        <el-table-column label="下班时间" prop="endTime" />
+        <el-table-column label="进出时间" prop="dayTime" />
         <el-table-column label="电话" prop="phone" />
         <el-table-column fixed="right" label="操作" align="center" width="150">
           <template #default="scope">
@@ -144,15 +140,13 @@ import {dayjs} from "element-plus";
 
 const date = ref<Array<Date>>();
 const queryParams = reactive<PassLogPageQuery>({
-  type: "0,1,2,3",
   pageNum: 1,
   pageSize: 10,
 });
 const passList = ref([]);
 const total = ref<number>(0);
 const ids = ref<number[]>([]);
-const accessTime = ref<string>();
-const accessSetTime = ref();
+const accessTime = ref([]);
 const timeVisible = ref(false);
 
 const shortcuts = [
@@ -187,7 +181,7 @@ const shortcuts = [
 const loading = ref(false);
 
 function modifyTimes() {
-  const time = dayjs(accessSetTime.value).format("HH:mm:ss");
+  const time = dayjs(accessTime.value).format("HH:mm:ss");
   modifyTime(time).then(() => {
     ElMessage.success("修改成功");
     timeVisible.value = false;

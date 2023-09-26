@@ -48,9 +48,7 @@ import java.util.Objects;
 public class AccessController {
 
     private final JwtTokenProvider jwtTokenManager;
-    private final SysUserService userService;
     private final IClockLogService clockLogService;
-    private final IDayWorkService dayWorkService;
 
 
     @Operation(summary = "获取工作设置")
